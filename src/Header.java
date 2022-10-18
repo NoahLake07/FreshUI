@@ -1,12 +1,12 @@
 import acm.graphics.GCompound;
 import acm.graphics.GRect;
 import acm.program.GraphicsProgram;
-
 import javax.swing.*;
 import java.awt.*;
 
 public class Header extends GCompound {
 
+    private GraphicsProgram GParent;
     private int headerHeight;
     private JLabel headerLabel;
     private GRect headerShape;
@@ -24,6 +24,7 @@ public class Header extends GCompound {
      * @param parent the GraphicsProgram parent this object belongs to
      */
     public Header (int width, String text, int alignment, GraphicsProgram parent){
+        GParent = parent;
 
         // setting variables to default
         scaleFactor = 10;
@@ -99,6 +100,15 @@ public class Header extends GCompound {
     }
 
     public void setPosition(int x, int y){
+        headerShape.setLocation(x,y);
+        headerLabel.setLocation((int) (headerShape.getWidth()/2 - headerLabel.getWidth()/2),
+                (int) (headerShape.getLocation().getY() + headerShape.getHeight()/2 - headerLabel.getHeight()/2));
+    }
 
+    public void setScaleFactor(int scaleFactor) {
+        this.scaleFactor = scaleFactor;
+        headerHeight = GParent.getHeight()/scaleFactor;
+        headerLabel.setLocation((int) (headerShape.getWidth()/2 - headerLabel.getWidth()/2),
+                (int) (headerShape.getLocation().getY() + headerShape.getHeight()/2 - headerLabel.getHeight()/2));
     }
 }
