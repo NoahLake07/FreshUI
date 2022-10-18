@@ -6,6 +6,7 @@ import java.awt.*;
 
 public class Header extends GCompound {
 
+    private boolean resizeProcessActive = false;
     private GraphicsProgram GParent;
     private int headerHeight;
     private JLabel headerLabel;
@@ -97,6 +98,8 @@ public class Header extends GCompound {
 
     public void setHeaderColor(Color headerColor) {
         this.headerColor = headerColor;
+        headerShape.setFillColor(headerColor);
+        headerShape.setColor(headerColor);
     }
 
     public void setPosition(int x, int y){
@@ -110,5 +113,28 @@ public class Header extends GCompound {
         headerHeight = GParent.getHeight()/scaleFactor;
         headerLabel.setLocation((int) (headerShape.getWidth()/2 - headerLabel.getWidth()/2),
                 (int) (headerShape.getLocation().getY() + headerShape.getHeight()/2 - headerLabel.getHeight()/2));
+    }
+
+    public void setTextColor(Color c){
+        headerLabel.setForeground(c);
+    }
+
+    public void setText(String s){
+        headerLabel.setText(s);
+        headerLabel.setLocation((int) (headerShape.getWidth()/2 - headerLabel.getWidth()/2),
+                (int) (headerShape.getLocation().getY() + headerShape.getHeight()/2 - headerLabel.getHeight()/2));
+    }
+
+    public void resizeOnGParent(){
+        headerHeight = GParent.getHeight()/scaleFactor;
+        headerShape.setBounds(-1,-1,GParent.getWidth()+1,headerHeight);
+        headerLabel.setLocation((int) (headerShape.getWidth()/2 - headerLabel.getWidth()/2),
+                (int) (headerShape.getLocation().getY() + headerShape.getHeight()/2 - headerLabel.getHeight()/2));
+    }
+
+    public void startResizing(){
+        resizeProcessActive = true;
+        // loop
+        resizeOnGParent();
     }
 }

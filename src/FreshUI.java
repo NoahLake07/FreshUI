@@ -1,5 +1,6 @@
 import acm.program.GraphicsProgram;
 import javax.swing.*;
+import java.awt.*;
 
 public class FreshUI extends GraphicsProgram {
 
@@ -12,6 +13,9 @@ public class FreshUI extends GraphicsProgram {
         this.getMenuBar().setVisible(false);
         Header header = new Header(this.getWidth(),"MY HEADER",CENTER,this);
         add(header,0,0);
+        header.setHeaderColor(new Color(1, 82, 105));
+        header.setText("Application");
+        header.setTextColor(Color.white);
     }
 
     public static void main(String[] args) {
