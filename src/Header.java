@@ -19,47 +19,48 @@ public class Header extends GCompound {
      * and moved at will, and the fill color can also be changed.
      * With this constructor, the color of the header is defaulted to gray, and the
      * text color is defaulted to black.
-     * @param width The width of the header
-     * @param text Text to be used as the title in the header
+     *
+     * @param width     The width of the header
+     * @param text      Text to be used as the title in the header
      * @param alignment The horizontal alignment of the text inside the header
-     * @param parent the GraphicsProgram parent this object belongs to
+     * @param parent    the GraphicsProgram parent this object belongs to
      */
-    public Header (int width, String text, int alignment, GraphicsProgram parent){
+    public Header(int width, String text, int alignment, GraphicsProgram parent) {
         GParent = parent;
 
         // setting variables to default
         scaleFactor = 10;
         headerColor = Color.GRAY;
         textColor = Color.BLACK;
-        headerHeight = parent.getHeight()/scaleFactor;
+        headerHeight = parent.getHeight() / scaleFactor;
 
         // instantiating components
         headerLabel = new JLabel(text);
-        headerShape = new GRect(width+1,headerHeight+1);
+        headerShape = new GRect(width + 1, headerHeight + 1);
 
         // adding headerShape, setting headerShape color
-        add(headerShape,-1,-1);
+        add(headerShape, -1, -1);
         headerShape.setFilled(true);
         headerShape.setFillColor(headerColor);
         headerShape.setColor(headerColor);
 
         // adding headerLabel, setting headerLabel color
-        parent.add(headerLabel,0,0);
+        parent.add(headerLabel, 0, 0);
         headerLabel.setForeground(textColor);
 
         // positioning headerLabel
         headerLabel.setHorizontalAlignment(alignment);
-        headerLabel.setLocation((int) (headerShape.getWidth()/2 - headerLabel.getWidth()/2),
-                                (int) (headerShape.getLocation().getY() + headerShape.getHeight()/2 - headerLabel.getHeight()/2));
+        headerLabel.setLocation((int) (headerShape.getWidth() / 2 - headerLabel.getWidth() / 2),
+                (int) (headerShape.getLocation().getY() + headerShape.getHeight() / 2 - headerLabel.getHeight() / 2));
 
 
     }
 
-    public String getHeaderText(){
+    public String getHeaderText() {
         return headerLabel.getText();
     }
 
-    public GRect getHeaderShape(){
+    public GRect getHeaderShape() {
         return headerShape;
     }
 
@@ -102,39 +103,45 @@ public class Header extends GCompound {
         headerShape.setColor(headerColor);
     }
 
-    public void setPosition(int x, int y){
-        headerShape.setLocation(x,y);
-        headerLabel.setLocation((int) (headerShape.getWidth()/2 - headerLabel.getWidth()/2),
-                (int) (headerShape.getLocation().getY() + headerShape.getHeight()/2 - headerLabel.getHeight()/2));
+    public void setPosition(int x, int y) {
+        headerShape.setLocation(x, y);
+        headerLabel.setLocation((int) (headerShape.getWidth() / 2 - headerLabel.getWidth() / 2),
+                (int) (headerShape.getLocation().getY() + headerShape.getHeight() / 2 - headerLabel.getHeight() / 2));
     }
 
     public void setScaleFactor(int scaleFactor) {
         this.scaleFactor = scaleFactor;
-        headerHeight = GParent.getHeight()/scaleFactor;
-        headerLabel.setLocation((int) (headerShape.getWidth()/2 - headerLabel.getWidth()/2),
-                (int) (headerShape.getLocation().getY() + headerShape.getHeight()/2 - headerLabel.getHeight()/2));
+        headerHeight = GParent.getHeight() / scaleFactor;
+        headerLabel.setLocation((int) (headerShape.getWidth() / 2 - headerLabel.getWidth() / 2),
+                (int) (headerShape.getLocation().getY() + headerShape.getHeight() / 2 - headerLabel.getHeight() / 2));
     }
 
-    public void setTextColor(Color c){
+    public void setTextColor(Color c) {
         headerLabel.setForeground(c);
     }
 
-    public void setText(String s){
+    public void setText(String s) {
         headerLabel.setText(s);
-        headerLabel.setLocation((int) (headerShape.getWidth()/2 - headerLabel.getWidth()/2),
-                (int) (headerShape.getLocation().getY() + headerShape.getHeight()/2 - headerLabel.getHeight()/2));
+        headerLabel.setLocation((int) (headerShape.getWidth() / 2 - headerLabel.getWidth() / 2),
+                (int) (headerShape.getLocation().getY() + headerShape.getHeight() / 2 - headerLabel.getHeight() / 2));
     }
 
-    public void resizeOnGParent(){
-        headerHeight = GParent.getHeight()/scaleFactor;
-        headerShape.setBounds(-1,-1,GParent.getWidth()+1,headerHeight);
-        headerLabel.setLocation((int) (headerShape.getWidth()/2 - headerLabel.getWidth()/2),
-                (int) (headerShape.getLocation().getY() + headerShape.getHeight()/2 - headerLabel.getHeight()/2));
+    public void resizeOnGParent() {
+        headerHeight = GParent.getHeight() / scaleFactor;
+        headerShape.setBounds(-1, -1, GParent.getWidth() + 1, headerHeight);
+        headerLabel.setLocation((int) (headerShape.getWidth() / 2 - headerLabel.getWidth() / 2),
+                (int) (headerShape.getLocation().getY() + headerShape.getHeight() / 2 - headerLabel.getHeight() / 2));
     }
 
-    public void startResizing(){
+    public void startResizing() {
         resizeProcessActive = true;
-        // loop
-        resizeOnGParent();
+        Runnable resizeProcess = new Runnable() {
+            public void run() {
+                while (true) {
+                    resizeOnGParent();
+                }
+            }
+        };
+        resizeProcess.run();
     }
 }
