@@ -17,7 +17,7 @@ public class RoundRect extends GCompound {
     public RoundRect(int w, int h){
         width = w;
         height = h;
-        cornerRadius = 24;
+        cornerRadius = 10;
 
         // create corners
         topLeftCorner = new GOval(cornerRadius*2,cornerRadius*2);
@@ -44,13 +44,7 @@ public class RoundRect extends GCompound {
 
     public void setCornerRadius(int radius){
         cornerRadius = radius;
-        topLeftCorner.setSize(cornerRadius*2,cornerRadius*2);
-        topRightCorner.setSize(cornerRadius*2,cornerRadius*2);
-        bottomLeftCorner.setSize(cornerRadius*2,cornerRadius*2);
-        bottomRightCorner.setSize(cornerRadius*2,cornerRadius*2);
-
-        vertPortion.setSize(width - (cornerRadius * 2), height);
-        horPortion.setSize(width, height - (cornerRadius * 2));
+        updateBounds();
     }
 
     public void setFillColor(Color color){
@@ -81,18 +75,23 @@ public class RoundRect extends GCompound {
 
     private void createOutline(){
         outline = new RoundRectOutline(width,height,cornerRadius,this);
-        add(outline,0,0);
+        add(outline,0 - (outline.getThickness()/2),- (outline.getThickness()/2));
         outline.sendToBack();
     }
 
     public void setOutlineThickness(int pixels){
         outline.setThickness(pixels);
+        updateBounds();
     }
 
     public void setSize(int w, int h){
         width = w;
         height = h;
+        updateBounds();
+    }
 
+    private void updateBounds(){
+        // update sizes of shapes
         topLeftCorner.setSize(cornerRadius*2,cornerRadius*2);
         topRightCorner.setSize(cornerRadius*2,cornerRadius*2);
         bottomLeftCorner.setSize(cornerRadius*2,cornerRadius*2);
@@ -100,6 +99,7 @@ public class RoundRect extends GCompound {
         vertPortion.setSize(width - (cornerRadius * 2), height);
         horPortion.setSize(width, height - (cornerRadius * 2));
 
+        // update locations of shapes
         topLeftCorner.setLocation(0,0);
         topRightCorner.setLocation(width-(cornerRadius*2),0);
         bottomLeftCorner.setLocation(0,height - (cornerRadius*2));
@@ -107,8 +107,13 @@ public class RoundRect extends GCompound {
         vertPortion.setLocation(cornerRadius,0);
         horPortion.setLocation(0,cornerRadius);
 
-        outline.setSize(w,h);
+        // update the outline
+        outline.setCornerRadius(cornerRadius);
+        outline.setSize(width,height);
+    }
 
+    public void setOutlineColor(Color c){
+        outline.setFillColor(c);
     }
 
     public double getHeight(){

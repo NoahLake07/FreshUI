@@ -22,12 +22,12 @@ public class RoundRectOutline extends GCompound {
      * @param gcomp The GCompound that this outline belongs to
      */
     public RoundRectOutline(int w, int h, int ra, GCompound gcomp){
-        outlineThickness = 1;
+        outlineThickness = 2;
         width = w + (outlineThickness*2);
         height = h + (outlineThickness*2);
         cornerRadius = ra;
         parent = gcomp;
-        offset = 1 - outlineThickness;
+        offset = 1-outlineThickness;
 
         // create corners
         topLeftCorner = new GOval(cornerRadius*2,cornerRadius*2);
@@ -41,9 +41,9 @@ public class RoundRectOutline extends GCompound {
 
         // add objects to the compound
         add(topLeftCorner,offset,offset);
-        add(topRightCorner,width - (cornerRadius*2),offset);
-        add(bottomLeftCorner,offset,height - (cornerRadius*2));
-        add(bottomRightCorner,width-(cornerRadius*2),height-(cornerRadius*2));
+        add(topRightCorner,width - (cornerRadius*2) - (outlineThickness/2),offset);
+        add(bottomLeftCorner,offset,height - (cornerRadius*2) - (getThickness()/2));
+        add(bottomRightCorner,width-(cornerRadius*2) - (getThickness()/2),height-(cornerRadius*2) - (getThickness()/2));
 
         add(vertPortion,topLeftCorner.getX() + cornerRadius, topLeftCorner.getY());
         add(horPortion,topLeftCorner.getX(),topLeftCorner.getY() + cornerRadius);
@@ -87,24 +87,34 @@ public class RoundRectOutline extends GCompound {
     }
 
     public void setSize(int w, int h){
-        offset = 1 - outlineThickness;
-        width = w;
-        height = h;
-
-        vertPortion.setSize(width - (cornerRadius * 2) + outlineThickness, height);
-        horPortion.setSize(width, height - (cornerRadius * 2) + outlineThickness);
-
-        topLeftCorner.setLocation(offset,offset);
-        topRightCorner.setLocation(width-(cornerRadius*2),offset);
-        bottomLeftCorner.setLocation(offset,height - (cornerRadius*2));
-        bottomRightCorner.setLocation(width-(cornerRadius*2),height-(cornerRadius*2));
-
-        vertPortion.setLocation(topLeftCorner.getX() + cornerRadius, topLeftCorner.getY());
-        horPortion.setLocation(topLeftCorner.getX(),topLeftCorner.getY() + cornerRadius);
+        width = w + (outlineThickness*2);
+        height = h + (outlineThickness*2);
+        offset = 1-outlineThickness;
+        updateBounds();
     }
 
     public void setThickness(int pixels){
         outlineThickness = pixels;
-        setSize(width,height);
+        updateBounds();
+    }
+
+    private void updateBounds(){
+        topLeftCorner.setSize(cornerRadius*2,cornerRadius*2);
+        topRightCorner.setSize(cornerRadius*2,cornerRadius*2);
+        bottomLeftCorner.setSize(cornerRadius*2,cornerRadius*2);
+        bottomRightCorner.setSize(cornerRadius*2,cornerRadius*2);
+        vertPortion.setSize(width - (cornerRadius * 2) + outlineThickness, height);
+        horPortion.setSize(width, height - (cornerRadius * 2) + outlineThickness);
+
+        topLeftCorner.setLocation(offset,offset);
+        topRightCorner.setLocation(width - (cornerRadius*2) - (outlineThickness/2),offset);
+        bottomLeftCorner.setLocation(offset,height - (cornerRadius*2) - (getThickness()/2));
+        bottomRightCorner.setLocation(width-(cornerRadius*2) - (getThickness()/2),height-(cornerRadius*2) - (getThickness()/2));
+        vertPortion.setLocation(topLeftCorner.getX() + cornerRadius, topLeftCorner.getY());
+        horPortion.setLocation(topLeftCorner.getX(),topLeftCorner.getY() + cornerRadius);
+    }
+
+    public int getThickness(){
+        return outlineThickness;
     }
 }
