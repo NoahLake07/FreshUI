@@ -8,13 +8,13 @@ public class RoundRect extends GCompound {
     private RoundRectOutline outline;
     private GOval topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner;
     private GRect vertPortion, horPortion;
-    private int cornerRadius, width, height;
+    private double cornerRadius, width, height;
 
     /**
      * Constructs a RoundRect using a width and a height,
      * while the corner radius will be defaulted.
      */
-    public RoundRect(int w, int h){
+    public RoundRect(double w, double h){
         width = w;
         height = h;
         cornerRadius = 10;
@@ -40,9 +40,10 @@ public class RoundRect extends GCompound {
 
         createOutline();
         outline.setVisible(false);
+        setFillColor(Color.GRAY);
     }
 
-    public void setCornerRadius(int radius){
+    public void setCornerRadius(double radius){
         cornerRadius = radius;
         updateBounds();
     }
@@ -84,7 +85,7 @@ public class RoundRect extends GCompound {
         updateBounds();
     }
 
-    public void setSize(int w, int h){
+    public void setSize(double w, double h){
         width = w;
         height = h;
         updateBounds();

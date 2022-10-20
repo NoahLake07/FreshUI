@@ -8,9 +8,9 @@ public class RoundRectOutline extends GCompound {
 
     private GOval topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner;
     private GRect vertPortion, horPortion;
-    private int cornerRadius, width, height, outlineThickness;
+    private double cornerRadius, width, height, outlineThickness;
 
-    private int offset = 0;
+    private double offset = 0;
     private GCompound parent;
 
     /**
@@ -21,7 +21,7 @@ public class RoundRectOutline extends GCompound {
      * @param ra corner radius
      * @param gcomp The GCompound that this outline belongs to
      */
-    public RoundRectOutline(int w, int h, int ra, GCompound gcomp){
+    public RoundRectOutline(double w, double h, double ra, GCompound gcomp){
         outlineThickness = 2;
         width = w + (outlineThickness*2);
         height = h + (outlineThickness*2);
@@ -49,11 +49,9 @@ public class RoundRectOutline extends GCompound {
         add(horPortion,topLeftCorner.getX(),topLeftCorner.getY() + cornerRadius);
 
         setFillColor(Color.BLACK);
-        System.out.println("Offset" + offset);
-        System.out.println("Thickness" + outlineThickness);
     }
 
-    public void setCornerRadius(int radius){
+    public void setCornerRadius(double radius){
         cornerRadius = radius;
         topLeftCorner.setSize(cornerRadius*2,cornerRadius*2);
         topRightCorner.setSize(cornerRadius*2,cornerRadius*2);
@@ -86,7 +84,7 @@ public class RoundRectOutline extends GCompound {
         horPortion.setColor(color);
     }
 
-    public void setSize(int w, int h){
+    public void setSize(double w, double h){
         width = w + (outlineThickness*2);
         height = h + (outlineThickness*2);
         offset = 1-outlineThickness;
@@ -114,7 +112,7 @@ public class RoundRectOutline extends GCompound {
         horPortion.setLocation(topLeftCorner.getX(),topLeftCorner.getY() + cornerRadius);
     }
 
-    public int getThickness(){
+    public double getThickness(){
         return outlineThickness;
     }
 }
