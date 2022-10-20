@@ -11,11 +11,15 @@ public class FreshUI extends GraphicsProgram {
 
     public void init(){
         this.getMenuBar().setVisible(false);
-        RoundRect rect = new RoundRect(100,100);
+        RoundRect rect = new RoundRect(230,230);
         add(rect, 100,100);
-        rect.setFillColor(Color.GRAY);
+        rect.setFillColor(new Color(134, 134, 134));
         rect.setOutlineVisibility(true);
-        rect.setOutlineThickness(30);
+
+        GRect boundaries = new GRect(rect.getWidth(),rect.getHeight());
+        add(boundaries,100,100);
+        boundaries.setColor(new Color(218, 64, 64, 97));
+        boundaries.setVisible(false);
     }
 
     public static void main(String[] args) {

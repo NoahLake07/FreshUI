@@ -9,18 +9,25 @@ public class RoundRectOutline extends GCompound {
     private GOval topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner;
     private GRect vertPortion, horPortion;
     private int cornerRadius, width, height, outlineThickness;
-    private int base;
+
+    private int offset = 0;
     private GCompound parent;
 
     /**
      * Constructs a RoundRectOutline using a width and a height,
-     * while the corner radius will be defaulted.
+     * while the corner radius and outline thickness will be defaulted.
+     * @param w width of the outline
+     * @param h height of the outline
+     * @param ra corner radius
+     * @param gcomp The GCompound that this outline belongs to
      */
     public RoundRectOutline(int w, int h, int ra, GCompound gcomp){
-        width = w+2;
-        height = h+2;
+        outlineThickness = 1;
+        width = w + (outlineThickness*2);
+        height = h + (outlineThickness*2);
         cornerRadius = ra;
         parent = gcomp;
+        offset = 1 - outlineThickness;
 
         // create corners
         topLeftCorner = new GOval(cornerRadius*2,cornerRadius*2);
@@ -29,19 +36,21 @@ public class RoundRectOutline extends GCompound {
         bottomRightCorner = new GOval(cornerRadius*2,cornerRadius*2);
 
         // create filler rectangles
-        vertPortion = new GRect(width - (cornerRadius * 2), height);
-        horPortion = new GRect(width, height - (cornerRadius * 2));
+        vertPortion = new GRect(width - (cornerRadius * 2) + outlineThickness, height);
+        horPortion = new GRect(width, height - (cornerRadius * 2) + outlineThickness);
 
         // add objects to the compound
-        add(topLeftCorner,0,0);
-        add(topRightCorner,width-(cornerRadius*2),0);
-        add(bottomLeftCorner,0,height - (cornerRadius*2));
+        add(topLeftCorner,offset,offset);
+        add(topRightCorner,width - (cornerRadius*2),offset);
+        add(bottomLeftCorner,offset,height - (cornerRadius*2));
         add(bottomRightCorner,width-(cornerRadius*2),height-(cornerRadius*2));
-        add(vertPortion,cornerRadius,0);
-        add(horPortion,0,cornerRadius);
+
+        add(vertPortion,topLeftCorner.getX() + cornerRadius, topLeftCorner.getY());
+        add(horPortion,topLeftCorner.getX(),topLeftCorner.getY() + cornerRadius);
 
         setFillColor(Color.BLACK);
-        base = 0;
+        System.out.println("Offset" + offset);
+        System.out.println("Thickness" + outlineThickness);
     }
 
     public void setCornerRadius(int radius){
@@ -78,40 +87,24 @@ public class RoundRectOutline extends GCompound {
     }
 
     public void setSize(int w, int h){
-        width = w+(outlineThickness/2);
-        height = h+(outlineThickness/2);
+        offset = 1 - outlineThickness;
+        width = w;
+        height = h;
 
-        topLeftCorner.setSize(cornerRadius*2,cornerRadius*2);
-        topRightCorner.setSize(cornerRadius*2,cornerRadius*2);
-        bottomLeftCorner.setSize(cornerRadius*2,cornerRadius*2);
-        bottomRightCorner.setSize(cornerRadius*2,cornerRadius*2);
-        vertPortion.setSize(width - (cornerRadius * 2), height);
-        horPortion.setSize(width, height - (cornerRadius * 2));
+        vertPortion.setSize(width - (cornerRadius * 2) + outlineThickness, height);
+        horPortion.setSize(width, height - (cornerRadius * 2) + outlineThickness);
+
+        topLeftCorner.setLocation(offset,offset);
+        topRightCorner.setLocation(width-(cornerRadius*2),offset);
+        bottomLeftCorner.setLocation(offset,height - (cornerRadius*2));
+        bottomRightCorner.setLocation(width-(cornerRadius*2),height-(cornerRadius*2));
+
+        vertPortion.setLocation(topLeftCorner.getX() + cornerRadius, topLeftCorner.getY());
+        horPortion.setLocation(topLeftCorner.getX(),topLeftCorner.getY() + cornerRadius);
     }
 
     public void setThickness(int pixels){
         outlineThickness = pixels;
-        width = (int) (parent.getWidth()+(outlineThickness));
-        height = (int) (parent.getHeight()+(outlineThickness));
-        base = 0 - outlineThickness;
-
-        // update size
-        topLeftCorner.setSize(cornerRadius*2,cornerRadius*2);
-        topRightCorner.setSize(cornerRadius*2,cornerRadius*2);
-        bottomLeftCorner.setSize(cornerRadius*2,cornerRadius*2);
-        bottomRightCorner.setSize(cornerRadius*2,cornerRadius*2);
-        vertPortion.setSize(width + (cornerRadius * 1.25), height);
-        horPortion.setSize(width, height + (cornerRadius * 1.25));
-        horPortion.setColor(Color.BLUE);
-        vertPortion.setColor(Color.CYAN);
-
-        // update location
-        topLeftCorner.setLocation(base,base);
-        topRightCorner.setLocation(width-(cornerRadius*2),base);
-        bottomLeftCorner.setLocation(base,height-(cornerRadius*2));
-        bottomRightCorner.setLocation(width-(cornerRadius*2),height-(cornerRadius*2));
-        vertPortion.setLocation(cornerRadius + base, base);
-        horPortion.setLocation(base,cornerRadius + base);
-
+        setSize(width,height);
     }
 }

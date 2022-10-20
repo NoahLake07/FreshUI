@@ -17,7 +17,7 @@ public class RoundRect extends GCompound {
     public RoundRect(int w, int h){
         width = w;
         height = h;
-        cornerRadius = 10;
+        cornerRadius = 24;
 
         // create corners
         topLeftCorner = new GOval(cornerRadius*2,cornerRadius*2);
@@ -81,7 +81,7 @@ public class RoundRect extends GCompound {
 
     private void createOutline(){
         outline = new RoundRectOutline(width,height,cornerRadius,this);
-        add(outline,-1,-1);
+        add(outline,0,0);
         outline.sendToBack();
     }
 
@@ -99,6 +99,16 @@ public class RoundRect extends GCompound {
         bottomRightCorner.setSize(cornerRadius*2,cornerRadius*2);
         vertPortion.setSize(width - (cornerRadius * 2), height);
         horPortion.setSize(width, height - (cornerRadius * 2));
+
+        topLeftCorner.setLocation(0,0);
+        topRightCorner.setLocation(width-(cornerRadius*2),0);
+        bottomLeftCorner.setLocation(0,height - (cornerRadius*2));
+        bottomRightCorner.setLocation(width-(cornerRadius*2),height-(cornerRadius*2));
+        vertPortion.setLocation(cornerRadius,0);
+        horPortion.setLocation(0,cornerRadius);
+
+        outline.setSize(w,h);
+
     }
 
     public double getHeight(){
