@@ -1,25 +1,25 @@
-import acm.graphics.GRect;
+package freshui;
+
 import acm.program.GraphicsProgram;
+import freshui.graphics.FRect;
 import javax.swing.*;
 import java.awt.*;
 
 public class FreshUI extends GraphicsProgram {
 
+    public final int CENTER = SwingConstants.CENTER;
+    public final int LEFT = SwingConstants.LEFT;
+    public final int RIGHT = SwingConstants.RIGHT;
+
     public void init(){
         this.getMenuBar().setVisible(false);
         this.setProgramName("FreshUI Window");
 
-        FRect x = new FRect(100,100);
-        add(x, 30,30);
+        FRect x = new FRect(60,60);
+        add(x,50,100);
 
-        x.makeRounded();
-        x.setCornerRadius(30);
-        x.makeSharp();
-        x.setColor(Color.BLUE);
-        x.makeRounded();
-        x.setOutlineVisible(true);
-        x.setOutlineThickness(6);
-        x.setOutlineColor(Color.BLACK);
+        x.startResizingOnWindow(this);
+
     }
 
     public void setProgramName(String s){

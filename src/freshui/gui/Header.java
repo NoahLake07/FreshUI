@@ -1,8 +1,12 @@
+package freshui.gui;
+
 import acm.graphics.GCompound;
 import acm.graphics.GRect;
 import acm.program.GraphicsProgram;
-import javax.swing.*;
-import java.awt.*;
+import freshui.graphics.FRect;
+
+import javax.swing.JLabel;
+import java.awt.Color;
 
 public class Header extends GCompound {
 
@@ -10,7 +14,7 @@ public class Header extends GCompound {
     private GraphicsProgram GParent;
     private int headerHeight;
     private JLabel headerLabel;
-    private GRect headerShape;
+    private FRect headerShape;
     private Color headerColor, textColor;
     private int scaleFactor;
 
@@ -36,13 +40,12 @@ public class Header extends GCompound {
 
         // instantiating components
         headerLabel = new JLabel(text);
-        headerShape = new GRect(width + 1, headerHeight + 1);
+        headerShape = new FRect(width + 1, headerHeight + 1);
 
         // adding headerShape, setting headerShape color
-        add(headerShape, -1, -1);
-        headerShape.setFilled(true);
+        parent.add(headerShape, -1, -1);
+        //headerShape.setFilled(true);
         headerShape.setFillColor(headerColor);
-        headerShape.setColor(headerColor);
 
         // adding headerLabel, setting headerLabel color
         parent.add(headerLabel, 0, 0);
@@ -60,7 +63,7 @@ public class Header extends GCompound {
         return headerLabel.getText();
     }
 
-    public GRect getHeaderShape() {
+    public FRect getHeaderShape() {
         return headerShape;
     }
 
@@ -88,7 +91,7 @@ public class Header extends GCompound {
         this.headerLabel = headerLabel;
     }
 
-    public void setHeaderShape(GRect headerShape) {
+    public void setHeaderShape(FRect headerShape) {
         this.headerShape = headerShape;
     }
 

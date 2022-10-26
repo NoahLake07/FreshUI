@@ -1,7 +1,9 @@
+package freshui.graphics;
+
 import acm.graphics.GCompound;
 import acm.graphics.GOval;
 import acm.graphics.GRect;
-import java.awt.*;
+import java.awt.Color;
 
 public class RoundRect extends GCompound {
 
@@ -11,7 +13,7 @@ public class RoundRect extends GCompound {
     private double cornerRadius, width, height;
 
     /**
-     * Constructs a RoundRect using a width and a height,
+     * Constructs a freshui.graphics.RoundRect using a width and a height,
      * while the corner radius will be defaulted.
      */
     public RoundRect(double w, double h){

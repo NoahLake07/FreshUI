@@ -1,18 +1,24 @@
+package freshui.graphics;
 import acm.graphics.GCompound;
+import acm.graphics.GObject;
 import acm.graphics.GRect;
-
 import java.awt.*;
+import java.awt.image.renderable.RenderableImage;
+
+import acm.program.GraphicsProgram;
+import freshui.util.Resizer;
 
 /**
- * A rectangle that enhances the usage of GRects, while also creating a RoundRect.
+ * A rectangle that enhances the usage of GRects, while also creating a freshui.graphics.RoundRect.
  */
 public class FRect extends GCompound {
 
-    // Objects used for a FRect
+    // Objects used for a freshui.graphics.FRect
     private GRect gRect;
+    private RectOutline gRectOutline;
     private RoundRect roundRect;
 
-    // FRect properties
+    // freshui.graphics.FRect properties
     private double width, height, outlineThickness;
     private int type;
     private Color myColor, myOutlineColor;
@@ -24,7 +30,7 @@ public class FRect extends GCompound {
 
     /**
      * Constructs a basic rectangle using parameters width and height.
-     * This compound contains a normal GRect, and a RoundRect.
+     * This compound contains a normal GRect, and a freshui.graphics.RoundRect.
      * @param w width of rectangle
      * @param h height of rectangle
      */
@@ -51,20 +57,23 @@ public class FRect extends GCompound {
     }
 
     private void updateOutline(){
-        // update RoundRect outline properties
+        // update freshui.graphics.RoundRect outline properties
         roundRect.setOutlineThickness((int) outlineThickness);
         roundRect.setOutlineColor(myOutlineColor);
 
-        //TODO update RectOutline outline properties
+        gRectOutline.setSize(width+outlineThickness,height+outlineThickness);
+        gRectOutline.setLocation(gRect.getX()-(outlineThickness/2),gRect.getY()-(outlineThickness/2));
     }
 
     private void updateRectType(){
         // update rectangle type
         if(type == NONROUNDED){
             gRect.setVisible(true);
+            gRectOutline.setVisible(true);
             roundRect.setVisible(false);
         } else if (type == ROUNDED){
             gRect.setVisible(false);
+            gRectOutline.setVisible(false);
             roundRect.setVisible(true);
         }
     }
@@ -79,6 +88,7 @@ public class FRect extends GCompound {
         // update color
         gRect.setFillColor(myColor);
         gRect.setColor(myColor);
+        gRectOutline.setColor(myColor);
         roundRect.setFillColor(myColor);
     }
 
@@ -87,6 +97,9 @@ public class FRect extends GCompound {
         gRect.setColor(myColor);
         gRect.setFilled(true);
         gRect.setFillColor(myColor);
+
+        gRectOutline = new RectOutline(width+outlineThickness,height+outlineThickness);
+        add(gRectOutline, gRect.getX()-(outlineThickness/2),gRect.getY()-(outlineThickness/2));
     }
 
     private void createRoundRect(){
@@ -109,6 +122,7 @@ public class FRect extends GCompound {
 
     public void setOutlineVisible(boolean status){
         roundRect.setOutlineVisibility(status);
+        gRectOutline.setVisible(status);
         updateOutline();
     }
 
@@ -126,7 +140,40 @@ public class FRect extends GCompound {
         // set outline thickness of roundrect
         roundRect.setOutlineThickness(pixels);
 
-        // TODO set outline thickness of grect
+        // set outline thickness of rectoutline
+        gRectOutline.setSize(width+outlineThickness,height+outlineThickness);
+        gRectOutline.setLocation(gRect.getX()-(outlineThickness/2),gRect.getY()-(outlineThickness/2));
+
+    }
+
+    public void setSize(double w, double h){
+        width = w;
+        height = h;
+        updateRectBounds();
+    }
+
+    public void setBounds(double x, double y, double w, double h){
+        // update size
+        gRect.setSize(w,h);
+        roundRect.setSize(w,h);
+
+        // update location inside compound
+        gRect.setLocation(x,y);
+        roundRect.setLocation(x,y);
+    }
+
+
+    public void startResizingOnWindow(GraphicsProgram parent){
+        double[] rValues = Resizer.getRelativeValues(parent,this);
+        Runnable resizeProcess = new Runnable() {
+            public void run() {
+                while (true) {
+                    // resize on parent
+
+                }
+            }
+        };
+        resizeProcess.run();
     }
 
 }

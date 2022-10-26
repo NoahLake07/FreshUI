@@ -1,3 +1,5 @@
+package freshui.graphics;
+
 import acm.graphics.GCompound;
 import acm.graphics.GOval;
 import acm.graphics.GRect;
@@ -14,7 +16,7 @@ public class RoundRectOutline extends GCompound {
     private GCompound parent;
 
     /**
-     * Constructs a RoundRectOutline using a width and a height,
+     * Constructs a freshui.graphics.RoundRectOutline using a width and a height,
      * while the corner radius and outline thickness will be defaulted.
      * @param w width of the outline
      * @param h height of the outline
