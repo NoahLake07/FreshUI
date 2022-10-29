@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="FreshUI:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/FreshUI_jar</output-path>
+    <root id="archive" name="FreshUI.jar">
+      <element id="module-output" name="FreshUI" />
+      <element id="extracted-dir" path="$USER_HOME$/Library/CloudStorage/OneDrive-WasatchSchoolDistrict/-SCHOOL-/2022-2023/G1 Programming Karnes/Dependencies/acm.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

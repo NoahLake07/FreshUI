@@ -1,9 +1,7 @@
 package freshui.graphics;
 import acm.graphics.GCompound;
-import acm.graphics.GObject;
 import acm.graphics.GRect;
 import java.awt.*;
-import java.awt.image.renderable.RenderableImage;
 
 import acm.program.GraphicsProgram;
 import freshui.util.Resizer;
@@ -11,7 +9,7 @@ import freshui.util.Resizer;
 /**
  * A rectangle that enhances the usage of GRects, while also creating a freshui.graphics.RoundRect.
  */
-public class FRect extends GCompound {
+public class FRect extends FCompound {
 
     // Objects used for a freshui.graphics.FRect
     private GRect gRect;
@@ -106,12 +104,12 @@ public class FRect extends GCompound {
         roundRect = new RoundRect(width, height);
     }
 
-    public void makeRounded(){
+    public void setRounded(){
         type = ROUNDED;
         updateRectBounds();
     }
 
-    public void makeSharp(){
+    public void setSharp(){
         type = NONROUNDED;
         updateRectBounds();
     }
@@ -168,7 +166,7 @@ public class FRect extends GCompound {
         Runnable resizeProcess = new Runnable() {
             public void run() {
                 while (true) {
-                    // resize on parent
+                    // TODO resize on parent
 
                 }
             }
