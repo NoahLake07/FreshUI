@@ -1,11 +1,10 @@
 package freshui.graphics;
 
-import acm.graphics.GCompound;
 import acm.graphics.GOval;
 import acm.graphics.GRect;
 import java.awt.Color;
 
-public class RoundRect extends GCompound {
+public abstract class RoundRect extends FCompound {
 
     private RoundRectOutline outline;
     private GOval topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner;
@@ -48,6 +47,10 @@ public class RoundRect extends GCompound {
     public void setCornerRadius(double radius){
         cornerRadius = radius;
         updateBounds();
+    }
+
+    public double getCornerRadius(){
+        return cornerRadius;
     }
 
     public void setFillColor(Color color){
@@ -125,5 +128,9 @@ public class RoundRect extends GCompound {
 
     public double getWidth(){
         return width;
+    }
+
+    public void setRounded(){
+
     }
 }

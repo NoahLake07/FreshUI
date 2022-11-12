@@ -15,6 +15,7 @@ public abstract class FreshProgram extends GraphicsProgram {
     public void init(){
         this.getMenuBar().setVisible(false);
         this.setProgramName("FreshUI Window");
+        log("INITIALIZED");
     }
 
     public void run(){
@@ -24,6 +25,10 @@ public abstract class FreshProgram extends GraphicsProgram {
     public void setProgramName(String s){
         this.setTitle(s);
         this.getMenuBar().setName(s);
+    }
+
+    public void log(String log){
+        System.out.println("FreshUI:Program:: " + log);
     }
 
 }

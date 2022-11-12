@@ -1,20 +1,20 @@
 package freshui.gui;
 
 import acm.graphics.GCompound;
-import acm.graphics.GRect;
-import acm.program.GraphicsProgram;
-import freshui.graphics.FRect;
+import freshui.graphics.FCompound;
+import freshui.graphics.OldFRect;
+import freshui.program.FreshProgram;
 
-import javax.swing.JLabel;
+import javax.swing.*;
 import java.awt.Color;
 
-public class Header extends GCompound {
+public class Header extends FCompound {
 
     private boolean resizeProcessActive = false;
-    private GraphicsProgram GParent;
+    private FreshProgram freshProgramParent;
     private int headerHeight;
     private JLabel headerLabel;
-    private FRect headerShape;
+    private OldFRect headerShape;
     private Color headerColor, textColor;
     private int scaleFactor;
 
@@ -27,28 +27,29 @@ public class Header extends GCompound {
      * @param width     The width of the header
      * @param text      Text to be used as the title in the header
      * @param alignment The horizontal alignment of the text inside the header
-     * @param parent    the GraphicsProgram parent this object belongs to
      */
-    public Header(int width, String text, int alignment, GraphicsProgram parent) {
-        GParent = parent;
+    public Header(int width, String text, int alignment, FreshProgram parent) {
+        freshProgramParent = parent;
 
         // setting variables to default
         scaleFactor = 10;
         headerColor = Color.GRAY;
         textColor = Color.BLACK;
-        headerHeight = parent.getHeight() / scaleFactor;
+        headerHeight = freshProgramParent.getHeight() / scaleFactor;
 
         // instantiating components
         headerLabel = new JLabel(text);
-        headerShape = new FRect(width + 1, headerHeight + 1);
+        headerShape = new OldFRect(width + 1, headerHeight + 1);
 
         // adding headerShape, setting headerShape color
-        parent.add(headerShape, -1, -1);
+        add(headerShape);
+        headerShape.setBounds(-1,-1,headerShape.getWidth(),headerShape.getHeight());
         //headerShape.setFilled(true);
         headerShape.setFillColor(headerColor);
 
         // adding headerLabel, setting headerLabel color
-        parent.add(headerLabel, 0, 0);
+        freshProgramParent.add(headerLabel,0,0);
+        headerLabel.setBounds(0,0,headerLabel.getWidth(),headerLabel.getHeight());
         headerLabel.setForeground(textColor);
 
         // positioning headerLabel
@@ -56,14 +57,18 @@ public class Header extends GCompound {
         headerLabel.setLocation((int) (headerShape.getWidth() / 2 - headerLabel.getWidth() / 2),
                 (int) (headerShape.getLocation().getY() + headerShape.getHeight() / 2 - headerLabel.getHeight() / 2));
 
+    }
 
+    public void setLocation(double x, double y){
+        freshProgramParent.setLocation((int) x, (int) y);
+        headerLabel.setLocation(headerLabel.getWidth(),headerLabel.getHeight());
     }
 
     public String getHeaderText() {
         return headerLabel.getText();
     }
 
-    public FRect getHeaderShape() {
+    public OldFRect getHeaderShape() {
         return headerShape;
     }
 
@@ -91,7 +96,7 @@ public class Header extends GCompound {
         this.headerLabel = headerLabel;
     }
 
-    public void setHeaderShape(FRect headerShape) {
+    public void setHeaderShape(OldFRect headerShape) {
         this.headerShape = headerShape;
     }
 
@@ -114,7 +119,7 @@ public class Header extends GCompound {
 
     public void setScaleFactor(int scaleFactor) {
         this.scaleFactor = scaleFactor;
-        headerHeight = GParent.getHeight() / scaleFactor;
+        headerHeight = freshProgramParent.getHeight() / scaleFactor;
         headerLabel.setLocation((int) (headerShape.getWidth() / 2 - headerLabel.getWidth() / 2),
                 (int) (headerShape.getLocation().getY() + headerShape.getHeight() / 2 - headerLabel.getHeight() / 2));
     }
@@ -130,8 +135,8 @@ public class Header extends GCompound {
     }
 
     public void resizeOnGParent() {
-        headerHeight = GParent.getHeight() / scaleFactor;
-        headerShape.setBounds(-1, -1, GParent.getWidth() + 1, headerHeight);
+        headerHeight = freshProgramParent.getHeight() / scaleFactor;
+        headerShape.setBounds(-1, -1, freshProgramParent.getWidth() + 1, headerHeight);
         headerLabel.setLocation((int) (headerShape.getWidth() / 2 - headerLabel.getWidth() / 2),
                 (int) (headerShape.getLocation().getY() + headerShape.getHeight() / 2 - headerLabel.getHeight() / 2));
     }
