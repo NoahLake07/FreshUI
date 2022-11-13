@@ -1,0 +1,87 @@
+package freshui.gui;
+
+import acm.graphics.GCanvas;
+import freshui.graphics.FRect;
+import freshui.interfaces.Colorable;
+import freshui.interfaces.FreshComponent;
+import freshui.interfaces.InputTraits;
+import freshui.interfaces.Roundable;
+import freshui.program.FreshProgram;
+import freshui.util.FColor;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class Input implements InputTraits, Colorable, Roundable, FreshComponent {
+
+    final int OUTLINE_SHADE_FACTOR = 2;
+    FreshProgram freshProgramParent;
+    FRect shape;
+    String label;
+    JLabel inputLabel;
+    JFormattedTextField inputField;
+    Color color;
+    StackWalker walker = StackWalker
+            .getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE);
+
+    GCanvas gc;
+    // TODO assign gc to the caller class getGCanvas()
+
+    /**
+     * Creates an input using default values, a string input,
+     */
+    public Input(String s, FreshProgram parent){
+        freshProgramParent = parent;
+        color = FColor.getRandomColor(FColor.presetColors);
+        inputField = new JFormattedTextField();
+        inputField.setSize(40,inputField.getHeight());
+        shape = new FRect(120,40);
+        label = s;
+
+        // shape setup
+        parent.add(shape);
+        shape.setFillColor(color);
+        shape.setOutlineVisibility(true);
+        shape.setRounded();
+        shape.setOutlineThickness(2);
+        shape.setOutlineColor(color);
+
+        // label setup
+        inputLabel = new JLabel(label + ":");
+        parent.add(inputLabel,0,0);
+
+        // input setup
+        parent.add(inputField,0,0);
+
+        setLocation(0,0);
+    }
+
+    public void setRounded(){
+        shape.setRounded();
+    }
+
+    public void setSharp(){
+        shape.setSharp();
+    }
+
+    public void setColor(Color c){
+        shape.setFillColor(c);
+
+        Color outlineC = FColor.darker(c,0.8);
+        shape.setOutlineColor(outlineC);
+    }
+
+    public void setLocation(int x, int y){
+        shape.setLocation(x,y);
+        inputField.setLocation((int) (x + 2*(shape.getWidth()/3)), (int) (y + shape.getHeight()/2 - inputField.getHeight()/2));
+        inputLabel.setLocation((int) (x+shape.getWidth()/5), (int) (y+shape.getHeight()/2 - inputLabel.getHeight()/2));
+    }
+
+    public void setOutlineThickness(int i) {
+        shape.setOutlineThickness(i);
+    }
+
+    public void setOutlineVisible(boolean b) {
+        shape.setOutlineVisibility(b);
+    }
+}
