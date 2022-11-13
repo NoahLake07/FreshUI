@@ -6,7 +6,7 @@ import javax.swing.*;
 
 public class DropdownTile extends FCompound {
 
-    OldFRect tile = new OldFRect(50,10);
+    FRect tile = new FRect(50,10);
     JLabel text = new JLabel("Dropdown");
 
     public DropdownTile(String toDisplay, Dropdown parent){

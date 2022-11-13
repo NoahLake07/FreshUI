@@ -12,7 +12,7 @@ public abstract class RoundRect extends FCompound {
     private double cornerRadius, width, height;
 
     /**
-     * Constructs a freshui.graphics.RoundRect using a width and a height,
+     * Constructs a RoundRect using a width and a height,
      * while the corner radius will be defaulted.
      */
     public RoundRect(double w, double h){
@@ -121,6 +121,9 @@ public abstract class RoundRect extends FCompound {
     public void setOutlineColor(Color c){
         outline.setFillColor(c);
     }
+    public Color getOutlineColor(){
+        return outline.getColor();
+    }
 
     public double getHeight(){
         return height;
@@ -130,7 +133,16 @@ public abstract class RoundRect extends FCompound {
         return width;
     }
 
-    public void setRounded(){
+    public boolean isOutlineVisible(){
+        return outline.isVisible();
+    }
 
+    public int getOutlineThickness(){
+        return (int) outline.getThickness();
+    }
+
+    public void setBounds(int x, int y, int w, int h){
+        setLocation(x,y);
+        setSize(w,h);
     }
 }

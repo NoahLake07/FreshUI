@@ -1,8 +1,7 @@
 package freshui.gui;
 
-import acm.graphics.GCompound;
 import freshui.graphics.FCompound;
-import freshui.graphics.OldFRect;
+import freshui.graphics.FRect;
 import freshui.program.FreshProgram;
 
 import javax.swing.*;
@@ -14,7 +13,7 @@ public class Header extends FCompound {
     private FreshProgram freshProgramParent;
     private int headerHeight;
     private JLabel headerLabel;
-    private OldFRect headerShape;
+    private FRect headerShape;
     private Color headerColor, textColor;
     private int scaleFactor;
 
@@ -39,11 +38,11 @@ public class Header extends FCompound {
 
         // instantiating components
         headerLabel = new JLabel(text);
-        headerShape = new OldFRect(width + 1, headerHeight + 1);
+        headerShape = new FRect(width + 1, headerHeight + 1);
 
         // adding headerShape, setting headerShape color
         add(headerShape);
-        headerShape.setBounds(-1,-1,headerShape.getWidth(),headerShape.getHeight());
+        headerShape.setBounds(-1,-1, (int) headerShape.getWidth(), (int) headerShape.getHeight());
         //headerShape.setFilled(true);
         headerShape.setFillColor(headerColor);
 
@@ -68,7 +67,7 @@ public class Header extends FCompound {
         return headerLabel.getText();
     }
 
-    public OldFRect getHeaderShape() {
+    public FRect getHeaderShape() {
         return headerShape;
     }
 
@@ -96,7 +95,7 @@ public class Header extends FCompound {
         this.headerLabel = headerLabel;
     }
 
-    public void setHeaderShape(OldFRect headerShape) {
+    public void setHeaderShape(FRect headerShape) {
         this.headerShape = headerShape;
     }
 

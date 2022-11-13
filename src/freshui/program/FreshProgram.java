@@ -19,7 +19,7 @@ public abstract class FreshProgram extends GraphicsProgram {
     }
 
     public void run(){
-
+        this.getMenuBar().setVisible(false);
     }
 
     public void setProgramName(String s){

@@ -30,4 +30,14 @@ public class FColor {
         return pickedColorList.get(3);
     }
 
+    public static Color darker(Color c, double FACTOR) {
+
+        return new Color(
+                Math.max((int)(c.getRed()  *FACTOR), 0), // r
+                Math.max((int)(c.getGreen()*FACTOR), 0), // g
+                Math.max((int)(c.getBlue() *FACTOR), 0), // b
+                c.getAlpha()
+        );
+    }
+
 }

@@ -9,8 +9,11 @@ public class FreshUI extends FreshProgram {
 
     public void init(){
         Input x = new Input("Input",this);
-        add(x, 100,100);
         x.setColor(FColor.getRandomColor(FColor.presetColors));
+        x.addToParent();
+        x.setLocation(100,100);
+        x.setOutlineVisible(true);
+        x.setOutlineThickness(1);
 
     }
 

@@ -10,7 +10,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../Documents/Programming/Dependencies/acm.jar!/" />
+          <root url="jar://$USER_HOME$/Documents/Programming/Dependencies/acm.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -20,6 +20,24 @@
       <library>
         <CLASSES>
           <root url="jar://$USER_HOME$/Library/CloudStorage/OneDrive-WasatchSchoolDistrict/-SCHOOL-/2022-2023/G1 Programming Karnes/Dependencies/acm.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/Documents/Documents/Programming/Dependencies/acm.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/Documents/Documents/Programming/Dependencies/Dialog.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
