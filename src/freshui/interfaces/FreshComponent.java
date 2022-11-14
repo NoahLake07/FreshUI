@@ -9,6 +9,10 @@ public interface FreshComponent {
     double getWidth();
     double getHeight();
 
+    void setWidth(double w);
+    void setHeight(double h);
+    void setBounds(double x, double y, double w, double h);
+
     void addToParent();
     boolean isAdded();
 

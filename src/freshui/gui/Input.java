@@ -118,6 +118,36 @@ public class Input implements InputTraits, Colorable, Roundable, ObjectOutline, 
     }
 
     @Override
+    public void setWidth(double w) {
+        shape.setSize(w,getHeight());
+        setLocation(getX(),getY());
+    }
+
+    @Override
+    public void setHeight(double h) {
+        shape.setSize(h,getHeight());
+        setLocation(getX(),getY());
+    }
+
+    @Override
+    public void setBounds(double x, double y, double w, double h) {
+        shape.setSize(w,h);
+
+        if(isAdded){
+            shape.setLocation(x,y);
+            inputField.setLocation((int) (x + 2*(shape.getWidth()/3)), (int) (y + shape.getHeight()/2 - inputField.getHeight()/2));
+            inputLabel.setLocation((int) (x+shape.getWidth()/5), (int) (y+shape.getHeight()/2 - inputLabel.getHeight()/2));
+        } else {
+            try {
+                throw new Exception("You cannot invoke FreshComponent that is not yet added to a FreshProgram parent");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+    }
+
+    @Override
     public void addToParent() {
         freshProgramParent.add(shape);
 

@@ -22,6 +22,19 @@ public class FRect extends RoundRect {
     }
 
     @Override
+    public void setWidth(double w) {
+    }
+
+    @Override
+    public void setHeight(double h) {
+    }
+
+    @Override
+    public void setBounds(double x, double y, double w, double h) {
+
+    }
+
+    @Override
     public void addToParent() {
 
     }
