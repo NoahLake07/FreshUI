@@ -21,4 +21,13 @@ public class FRect extends RoundRect {
         return this.getCornerRadius()<1;
     }
 
+    @Override
+    public void addToParent() {
+
+    }
+
+    @Override
+    public boolean isAdded() {
+        return false;
+    }
 }

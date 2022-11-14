@@ -108,6 +108,16 @@ public class Input implements InputTraits, Colorable, Roundable, ObjectOutline, 
     }
 
     @Override
+    public double getWidth() {
+        return shape.getWidth();
+    }
+
+    @Override
+    public double getHeight() {
+        return shape.getHeight();
+    }
+
+    @Override
     public void addToParent() {
         freshProgramParent.add(shape);
 

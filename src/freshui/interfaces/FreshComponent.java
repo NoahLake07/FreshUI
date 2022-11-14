@@ -6,6 +6,9 @@ public interface FreshComponent {
     double getX();
     double getY();
 
+    double getWidth();
+    double getHeight();
+
     void addToParent();
     boolean isAdded();
 

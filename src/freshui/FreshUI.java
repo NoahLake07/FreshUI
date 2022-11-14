@@ -4,16 +4,17 @@ import freshui.graphics.FRect;
 import freshui.gui.Input;
 import freshui.program.FreshProgram;
 import freshui.util.FColor;
+import freshui.util.Resizer;
 
 public class FreshUI extends FreshProgram {
 
     public void init(){
-        Input x = new Input("Input",this);
-        x.setColor(FColor.getRandomColor(FColor.presetColors));
-        x.addToParent();
-        x.setLocation(100,100);
-        x.setOutlineVisible(true);
-        x.setOutlineThickness(1);
+        FRect rect = new FRect(45,45);
+        add(rect,50,50);
+
+        Resizer resizer = new Resizer(this);
+        resizer.add(rect);
+        resizer.startResizing();
 
     }
 

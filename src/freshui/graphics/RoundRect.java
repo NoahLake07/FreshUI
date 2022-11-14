@@ -2,9 +2,11 @@ package freshui.graphics;
 
 import acm.graphics.GOval;
 import acm.graphics.GRect;
+import freshui.interfaces.FreshComponent;
+
 import java.awt.Color;
 
-public abstract class RoundRect extends FCompound {
+public abstract class RoundRect extends FCompound implements FreshComponent {
 
     private RoundRectOutline outline;
     private GOval topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner;
