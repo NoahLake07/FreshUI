@@ -10,7 +10,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../Programming/Dependencies/acm.jar!/" />
+          <root url="jar://$USER_HOME$/Programming/Dependencies/acm.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -28,7 +28,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../Documents/Programming/Dependencies/acm.jar!/" />
+          <root url="jar://$USER_HOME$/Documents/Programming/Dependencies/acm.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -37,7 +37,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../Documents/Programming/Dependencies/Dialog.jar!/" />
+          <root url="jar://$USER_HOME$/Documents/Programming/Dependencies/Dialog.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -47,6 +47,15 @@
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/Dependencies/FileMaster.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/Documents/Documents/Programming/Dependencies/acm.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
