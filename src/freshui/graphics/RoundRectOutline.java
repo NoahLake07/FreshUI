@@ -1,19 +1,25 @@
 package freshui.graphics;
 
-import acm.graphics.GCompound;
 import acm.graphics.GOval;
 import acm.graphics.GRect;
+import acm.program.GraphicsProgram;
+import freshui.interfaces.Colorable;
+import freshui.interfaces.FreshComponent;
+import freshui.program.FreshProgram;
 
 import java.awt.*;
 
-public class RoundRectOutline extends GCompound {
+public class RoundRectOutline implements FreshComponent, Colorable {
 
     private GOval topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner;
     private GRect vertPortion, horPortion;
     private double cornerRadius, width, height, outlineThickness;
 
     private double offset = 0;
-    private GCompound parent;
+    private GraphicsProgram parent;
+    double baseX,baseY;
+    boolean isAdded = false;
+    boolean isVisible = false;
 
     /**
      * Constructs a freshui.graphics.RoundRectOutline using a width and a height,
@@ -21,14 +27,14 @@ public class RoundRectOutline extends GCompound {
      * @param w width of the outline
      * @param h height of the outline
      * @param ra corner radius
-     * @param gcomp The GCompound that this outline belongs to
+     * @param gProg The GCompound that this outline belongs to
      */
-    public RoundRectOutline(double w, double h, double ra, GCompound gcomp){
+    public RoundRectOutline(double w, double h, double ra, GraphicsProgram gProg){
         outlineThickness = 2;
         width = w + (outlineThickness*2);
         height = h + (outlineThickness*2);
         cornerRadius = ra;
-        parent = gcomp;
+        parent = gProg;
         offset = 1-outlineThickness;
 
         // create corners
@@ -40,15 +46,6 @@ public class RoundRectOutline extends GCompound {
         // create filler rectangles
         vertPortion = new GRect(width - (cornerRadius * 2) + outlineThickness, height);
         horPortion = new GRect(width, height - (cornerRadius * 2) + outlineThickness);
-
-        // add objects to the compound
-        add(topLeftCorner,offset,offset);
-        add(topRightCorner,width - (cornerRadius*2) - (outlineThickness/2),offset);
-        add(bottomLeftCorner,offset,height - (cornerRadius*2) - (getThickness()/2));
-        add(bottomRightCorner,width-(cornerRadius*2) - (getThickness()/2),height-(cornerRadius*2) - (getThickness()/2));
-
-        add(vertPortion,topLeftCorner.getX() + cornerRadius, topLeftCorner.getY());
-        add(horPortion,topLeftCorner.getX(),topLeftCorner.getY() + cornerRadius);
 
         setFillColor(Color.BLACK);
     }
@@ -106,15 +103,118 @@ public class RoundRectOutline extends GCompound {
         vertPortion.setSize(width - (cornerRadius * 2) + outlineThickness, height);
         horPortion.setSize(width, height - (cornerRadius * 2) + outlineThickness);
 
-        topLeftCorner.setLocation(offset,offset);
-        topRightCorner.setLocation(width - (cornerRadius*2) - (outlineThickness/2),offset);
-        bottomLeftCorner.setLocation(offset,height - (cornerRadius*2) - (getThickness()/2));
-        bottomRightCorner.setLocation(width-(cornerRadius*2) - (getThickness()/2),height-(cornerRadius*2) - (getThickness()/2));
-        vertPortion.setLocation(topLeftCorner.getX() + cornerRadius, topLeftCorner.getY());
-        horPortion.setLocation(topLeftCorner.getX(),topLeftCorner.getY() + cornerRadius);
+        topLeftCorner.setLocation(baseX+offset,baseY+offset);
+        topRightCorner.setLocation(baseX+width - (cornerRadius*2) - (outlineThickness/2),baseY+offset);
+        bottomLeftCorner.setLocation(baseX+offset,baseY+height - (cornerRadius*2) - (getThickness()/2));
+        bottomRightCorner.setLocation(baseX+width-(cornerRadius*2) - (getThickness()/2),baseY+height-(cornerRadius*2) - (getThickness()/2));
+        vertPortion.setLocation(baseX+topLeftCorner.getX() + cornerRadius,baseY+ topLeftCorner.getY());
+        horPortion.setLocation(baseX+topLeftCorner.getX(),baseY+topLeftCorner.getY() + cornerRadius);
     }
 
     public double getThickness(){
         return outlineThickness;
+    }
+
+    @Override
+    public void setLocation(double x, double y) {
+        baseX = x;
+        baseY = y;
+        updateBounds();
+    }
+
+    @Override
+    public double getX() {
+        return baseX;
+    }
+
+    @Override
+    public double getY() {
+        return baseY;
+    }
+
+    @Override
+    public double getWidth() {
+        return width;
+    }
+
+    @Override
+    public double getHeight() {
+        return height;
+    }
+
+    @Override
+    public void setWidth(double w) {
+        width = w;
+        updateBounds();
+    }
+
+    @Override
+    public void setHeight(double h) {
+        height = h;
+        updateBounds();
+    }
+
+    @Override
+    public void setBounds(double x, double y, double w, double h) {
+        setWidth(w);
+        setHeight(h);
+        setLocation(x,y);
+    }
+
+    @Override
+    public void addToParent() {
+        isVisible = true;
+        isAdded = true;
+        baseX = 0;
+        baseY = 0;
+
+        programParent.add(topLeftCorner,baseX,baseY);
+        programParent.add(topRightCorner,baseX+width-(cornerRadius*2),baseY);
+        programParent.add(bottomLeftCorner,baseX,baseY+height - (cornerRadius*2));
+        programParent.add(bottomRightCorner,baseX+width-(cornerRadius*2),baseY+height-(cornerRadius*2));
+
+        programParent.add(vertPortion,baseX+cornerRadius,baseY);
+        programParent.add(horPortion,baseX,baseY+cornerRadius);
+    }
+
+    @Override
+    public boolean isAdded() {
+        return isAdded;
+    }
+
+    @Override
+    public boolean isVisible() {
+        return isVisible;
+    }
+
+    @Override
+    public void setVisible(boolean b) {
+        isVisible = b;
+        topLeftCorner.setVisible(b);
+        topRightCorner.setVisible(b);
+        bottomLeftCorner.setVisible(b);
+        bottomRightCorner.setVisible(b);
+        vertPortion.setVisible(b);
+        horPortion.setVisible(b);
+    }
+
+    @Override
+    public GraphicsProgram getProgramParent() {
+        return programParent;
+    }
+
+    @Override
+    public void setColor(Color c) {
+        topLeftCorner.setFillColor(c);
+        topRightCorner.setFillColor(c);
+        bottomLeftCorner.setFillColor(c);
+        bottomRightCorner.setFillColor(c);
+        vertPortion.setFillColor(c);
+        horPortion.setFillColor(c);
+    }
+
+    @Override
+    public Color getColor() {
+        return topLeftCorner.getColor();
     }
 }

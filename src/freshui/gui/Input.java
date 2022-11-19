@@ -1,5 +1,6 @@
 package freshui.gui;
 
+import acm.program.GraphicsProgram;
 import freshui.graphics.FRect;
 import freshui.interfaces.*;
 import freshui.program.FreshProgram;
@@ -179,6 +180,11 @@ public class Input implements InputTraits, Colorable, Roundable, ObjectOutline, 
         inputLabel.setVisible(b);
         inputField.setVisible(b);
         isVisible = b;
+    }
+
+    @Override
+    public GraphicsProgram getProgramParent() {
+        return programParent;
     }
 
     @Override

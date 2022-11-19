@@ -1,10 +1,22 @@
 package freshui.graphics;
 
-public class FRect extends RoundRect {
+import acm.program.GraphicsProgram;
+import freshui.interfaces.FreshComponent;
+import freshui.program.FreshProgram;
+
+public class FRect extends RoundRect implements FreshComponent {
+
+    private boolean isAdded = false;
 
     public FRect(double width, double height){
-        super(width,height);
+        super(width,height,0);
+        isAdded = false;
+    }
+
+    public FRect(double width, double height, GraphicsProgram parent){
+        super(width,height,0, parent);
         setCornerRadius(0);
+        isAdded = false;
     }
 
     public void setRounded(){
@@ -36,11 +48,16 @@ public class FRect extends RoundRect {
 
     @Override
     public void addToParent() {
-
+        isAdded = true;
     }
 
     @Override
     public boolean isAdded() {
         return false;
+    }
+
+    @Override
+    public GraphicsProgram getProgramParent() {
+        return programParent;
     }
 }

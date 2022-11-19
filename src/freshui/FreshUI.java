@@ -1,6 +1,7 @@
 package freshui;
 
 import freshui.graphics.FRect;
+import freshui.interfaces.FreshComponent;
 import freshui.program.FreshProgram;
 import freshui.util.Resizer;
 
@@ -11,14 +12,8 @@ public class FreshUI extends FreshProgram {
     */
 
     public void init(){
-        FRect rect = new FRect(45,45);
-        add(rect,50,50);
-
-        Resizer resizer = new Resizer(this);
-        resizer.add(rect);
-        resizer.startResizing();
-
-        System.out.println("Thread was successful");
+        FRect x = new FRect(20,40,this);
+        add((FreshComponent) x, 40,40);
     }
 
     public static void main(String[] args) {

@@ -2,6 +2,8 @@ package freshui.program;
 
 import acm.graphics.GCanvas;
 import acm.program.GraphicsProgram;
+import freshui.interfaces.FreshComponent;
+
 import javax.swing.*;
 
 public abstract class FreshProgram extends GraphicsProgram {
@@ -25,6 +27,15 @@ public abstract class FreshProgram extends GraphicsProgram {
     public void setProgramName(String s){
         this.setTitle(s);
         this.getMenuBar().setName(s);
+    }
+
+    public void add(FreshComponent fc, double x, double y){
+        if(fc.getProgramParent() == this) {
+            fc.addToParent();
+            fc.setLocation(x, y);
+        } else {
+            log("Object not added: specified program parent did not match");
+        }
     }
 
     public void log(String log){

@@ -2,25 +2,37 @@ package freshui.graphics;
 
 import acm.graphics.GOval;
 import acm.graphics.GRect;
+import acm.program.GraphicsProgram;
 import freshui.interfaces.FreshComponent;
-
 import java.awt.Color;
 
-public abstract class RoundRect extends FCompound implements FreshComponent {
+public abstract class RoundRect implements FreshComponent {
 
     private RoundRectOutline outline;
     private GOval topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner;
     private GRect vertPortion, horPortion;
     private double cornerRadius, width, height;
+    private GraphicsProgram programParent;
+    private boolean isAdded = false;
+    double baseX, baseY;
 
     /**
      * Constructs a RoundRect using a width and a height,
      * while the corner radius will be defaulted.
      */
     public RoundRect(double w, double h){
+        this(w,h,10,null);
+    }
+
+    public RoundRect(double w, double h, double cR){
+        this(w,h,cR,null);
+    }
+
+    public RoundRect(double w, double h, double cR, GraphicsProgram prPa){
+        programParent = prPa;
         width = w;
         height = h;
-        cornerRadius = 10;
+        cornerRadius = cR;
 
         // create corners
         topLeftCorner = new GOval(cornerRadius*2,cornerRadius*2);
@@ -31,15 +43,6 @@ public abstract class RoundRect extends FCompound implements FreshComponent {
         // create filler rectangles
         vertPortion = new GRect(width - (cornerRadius * 2), height);
         horPortion = new GRect(width, height - (cornerRadius * 2));
-
-        // add objects to the compound
-        add(topLeftCorner,0,0);
-        add(topRightCorner,width-(cornerRadius*2),0);
-        add(bottomLeftCorner,0,height - (cornerRadius*2));
-        add(bottomRightCorner,width-(cornerRadius*2),height-(cornerRadius*2));
-
-        add(vertPortion,cornerRadius,0);
-        add(horPortion,0,cornerRadius);
 
         createOutline();
         outline.setVisible(false);
@@ -82,9 +85,7 @@ public abstract class RoundRect extends FCompound implements FreshComponent {
     }
 
     private void createOutline(){
-        outline = new RoundRectOutline(width,height,cornerRadius,this);
-        add(outline,0 - (outline.getThickness()/2),- (outline.getThickness()/2));
-        outline.sendToBack();
+        outline = new RoundRectOutline(width,height,cornerRadius,programParent);
     }
 
     public void setOutlineThickness(int pixels){
@@ -146,5 +147,20 @@ public abstract class RoundRect extends FCompound implements FreshComponent {
     public void setBounds(int x, int y, int w, int h){
         setLocation(x,y);
         setSize(w,h);
+    }
+
+    public void addToParent(){
+        baseX = 0;
+        baseY = 0;
+
+        programParent.add(outline,baseX - (outline.getThickness()/2), baseY - (outline.getThickness()/2));
+
+        programParent.add(topLeftCorner,baseX,baseY);
+        programParent.add(topRightCorner,baseX+width-(cornerRadius*2),baseY);
+        programParent.add(bottomLeftCorner,baseX,baseY+height - (cornerRadius*2));
+        programParent.add(bottomRightCorner,baseX+width-(cornerRadius*2),baseY+height-(cornerRadius*2));
+
+        programParent.add(vertPortion,baseX+cornerRadius,baseY);
+        programParent.add(horPortion,baseX,baseY+cornerRadius);
     }
 }

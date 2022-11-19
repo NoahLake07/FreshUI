@@ -4,6 +4,7 @@
     <root id="archive" name="FreshUI.jar">
       <element id="module-output" name="FreshUI" />
       <element id="extracted-dir" path="$USER_HOME$/Library/CloudStorage/OneDrive-WasatchSchoolDistrict/-SCHOOL-/2022-2023/G1 Programming Karnes/Dependencies/acm.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/Dependencies/FileMaster.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>
