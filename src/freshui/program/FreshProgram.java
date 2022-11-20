@@ -31,8 +31,7 @@ public abstract class FreshProgram extends GraphicsProgram {
 
     public void add(FreshComponent fc, double x, double y){
         if(fc.getProgramParent() == this) {
-            fc.addToParent();
-            fc.setLocation(x, y);
+            fc.addToParent(x,y);
         } else {
             log("Object not added: specified program parent did not match");
         }

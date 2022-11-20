@@ -149,8 +149,8 @@ public class Input implements InputTraits, Colorable, Roundable, ObjectOutline, 
     }
 
     @Override
-    public void addToParent() {
-        freshProgramParent.add(shape);
+    public void addToParent(double x, double y) {
+        freshProgramParent.add(shape, x, y);
 
         // label setup
         inputLabel = new JLabel(label);
@@ -161,7 +161,7 @@ public class Input implements InputTraits, Colorable, Roundable, ObjectOutline, 
 
         isAdded = true;
         isVisible = true;
-        setLocation(0,0);
+        setLocation(x,y);
     }
 
     @Override
@@ -183,8 +183,8 @@ public class Input implements InputTraits, Colorable, Roundable, ObjectOutline, 
     }
 
     @Override
-    public GraphicsProgram getProgramParent() {
-        return programParent;
+    public FreshProgram getProgramParent() {
+        return freshProgramParent;
     }
 
     @Override

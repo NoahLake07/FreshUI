@@ -16,12 +16,14 @@ public interface FreshComponent {
     void setWidth(double w);
     void setHeight(double h);
     void setBounds(double x, double y, double w, double h);
+    void setSize(double w, double h);
 
-    void addToParent();
+    void addToParent(double x, double y);
     boolean isAdded();
 
     boolean isVisible();
     void setVisible(boolean b);
 
-    GraphicsProgram getProgramParent();
+    FreshProgram getProgramParent();
+    void setProgramParent(FreshProgram fpParent);
 }
