@@ -32,9 +32,9 @@ public class Input implements InputTraits, Colorable, Roundable, ObjectOutline, 
         label = s;
 
         // shape setup
-        shape.setFillColor(color);
-        shape.setOutlineVisibility(true);
-        shape.setRounded();
+        shape.setColor(color);
+        shape.setOutlineVisible(true);
+        shape.setRounded(true);
         shape.setOutlineThickness(2);
         shape.setOutlineColor(color);
     }
@@ -59,7 +59,7 @@ public class Input implements InputTraits, Colorable, Roundable, ObjectOutline, 
     }
 
     public void setOutlineVisible(boolean b) {
-        shape.setOutlineVisibility(b);
+        shape.setOutlineVisible(b);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class Input implements InputTraits, Colorable, Roundable, ObjectOutline, 
 
     @Override
     public void setColor(Color c) {
-        shape.setFillColor(c);
+        shape.setColor(c);
 
         Color outlineC = FColor.darker(c,0.8);
         shape.setOutlineColor(outlineC);
@@ -149,6 +149,11 @@ public class Input implements InputTraits, Colorable, Roundable, ObjectOutline, 
     }
 
     @Override
+    public void setSize(double w, double h) {
+
+    }
+
+    @Override
     public void addToParent(double x, double y) {
         freshProgramParent.add(shape, x, y);
 
@@ -185,6 +190,11 @@ public class Input implements InputTraits, Colorable, Roundable, ObjectOutline, 
     @Override
     public FreshProgram getProgramParent() {
         return freshProgramParent;
+    }
+
+    @Override
+    public void setProgramParent(FreshProgram fpParent) {
+
     }
 
     @Override
@@ -229,14 +239,13 @@ public class Input implements InputTraits, Colorable, Roundable, ObjectOutline, 
 
     @Override
     public void setRounded(boolean b) {
-
         if(b) {
             if (shape.isSharp() == true) {
-                shape.setRounded();
+                shape.setRounded(true);
                 shape.setCornerRadius(10);
             }
         } else {
-            shape.setSharp();
+            shape.setRounded(false);
         }
     }
 
