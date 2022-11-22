@@ -6,256 +6,41 @@ import freshui.interfaces.*;
 import freshui.program.FreshProgram;
 import freshui.util.FColor;
 import javax.swing.*;
-import java.awt.Color;
+import java.awt.*;
 
 public class Input implements InputTraits, Colorable, Roundable, ObjectOutline, FreshComponent {
 
+    // FreshProgram
     FreshProgram freshProgramParent;
+
+    // Input objects
     FRect shape;
-    String label;
-    JLabel inputLabel;
     JFormattedTextField inputField;
-    Color color;
+    JLabel inputLabel;
+
+    // Object attributes
+    Color color = new Color(141, 141, 141);
+
+    // Input attributes
+    Font labelFont;
+    String label;
     boolean isAdded = false;
     boolean isVisible = false;
 
     /**
      * Constructs an input using a String label, and the FreshProgram parent that the Input belongs to.
-     * All input details will be defaulted, and the color will be randomized.
+     * All input details will be defaulted, and the color will be defaulted to gray.
      */
     public Input(String s, FreshProgram parent){
         freshProgramParent = parent;
-        color = FColor.getRandomColor(FColor.presetColors);
-        inputField = new JFormattedTextField();
-        inputField.setSize(40,inputField.getHeight());
-        shape = new FRect(120,40);
         label = s;
-
-        // shape setup
-        shape.setColor(color);
-        shape.setOutlineVisible(true);
-        shape.setRounded(true);
-        shape.setOutlineThickness(2);
-        shape.setOutlineColor(color);
+        labelFont = new Font("Sans Serif", Font.PLAIN, 10);
+        isAdded = false;
+        isVisible = false;
+        shape = new FRect(100,30,parent);
+        inputLabel = new JLabel(s);
+        inputLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        inputLabel.setVerticalAlignment(SwingConstants.CENTER);
     }
 
-    public void setOutlineThickness(int i) {
-        shape.setOutlineThickness(i);
-    }
-
-    @Override
-    public int getOutlineThickness() {
-        return shape.getOutlineThickness();
-    }
-
-    @Override
-    public void setOutlineColor(Color c) {
-        shape.setOutlineColor(c);
-    }
-
-    @Override
-    public Color getOutlineColor() {
-        return shape.getOutlineColor();
-    }
-
-    public void setOutlineVisible(boolean b) {
-        shape.setOutlineVisible(b);
-    }
-
-    @Override
-    public boolean isOutlineVisible() {
-        return shape.isOutlineVisible();
-    }
-
-    @Override
-    public void setColor(Color c) {
-        shape.setColor(c);
-
-        Color outlineC = FColor.darker(c,0.8);
-        shape.setOutlineColor(outlineC);
-    }
-
-    @Override
-    public Color getColor() {
-        return shape.getColor();
-    }
-
-    @Override
-    public void setLocation(double x, double y) {
-
-        if(isAdded){
-            shape.setLocation(x,y);
-            inputField.setLocation((int) (x + 2*(shape.getWidth()/3)), (int) (y + shape.getHeight()/2 - inputField.getHeight()/2));
-            inputLabel.setLocation((int) (x+shape.getWidth()/5), (int) (y+shape.getHeight()/2 - inputLabel.getHeight()/2));
-        } else {
-            try {
-                throw new Exception("You cannot invoke FreshComponent that is not yet added to a FreshProgram parent");
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-
-    }
-
-    @Override
-    public double getX() {
-        return this.getX();
-    }
-
-    @Override
-    public double getY() {
-        return this.getY();
-    }
-
-    @Override
-    public double getWidth() {
-        return shape.getWidth();
-    }
-
-    @Override
-    public double getHeight() {
-        return shape.getHeight();
-    }
-
-    @Override
-    public void setWidth(double w) {
-        shape.setSize(w,getHeight());
-        setLocation(getX(),getY());
-    }
-
-    @Override
-    public void setHeight(double h) {
-        shape.setSize(h,getHeight());
-        setLocation(getX(),getY());
-    }
-
-    @Override
-    public void setBounds(double x, double y, double w, double h) {
-        shape.setSize(w,h);
-
-        if(isAdded){
-            shape.setLocation(x,y);
-            inputField.setLocation((int) (x + 2*(shape.getWidth()/3)), (int) (y + shape.getHeight()/2 - inputField.getHeight()/2));
-            inputLabel.setLocation((int) (x+shape.getWidth()/5), (int) (y+shape.getHeight()/2 - inputLabel.getHeight()/2));
-        } else {
-            try {
-                throw new Exception("You cannot invoke FreshComponent that is not yet added to a FreshProgram parent");
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-    }
-
-    @Override
-    public void setSize(double w, double h) {
-
-    }
-
-    @Override
-    public void addToParent(double x, double y) {
-        freshProgramParent.add(shape, x, y);
-
-        // label setup
-        inputLabel = new JLabel(label);
-        freshProgramParent.add(inputLabel,0,0);
-
-        // input setup
-        freshProgramParent.add(inputField,0,0);
-
-        isAdded = true;
-        isVisible = true;
-        setLocation(x,y);
-    }
-
-    @Override
-    public boolean isAdded() {
-        return isAdded;
-    }
-
-    @Override
-    public boolean isVisible() {
-        return isVisible();
-    }
-
-    @Override
-    public void setVisible(boolean b) {
-        shape.setVisible(b);
-        inputLabel.setVisible(b);
-        inputField.setVisible(b);
-        isVisible = b;
-    }
-
-    @Override
-    public FreshProgram getProgramParent() {
-        return freshProgramParent;
-    }
-
-    @Override
-    public void setProgramParent(FreshProgram fpParent) {
-
-    }
-
-    @Override
-    public void setLabel(String s) {
-        label = s;
-    }
-
-    @Override
-    public String getLabel() {
-        return label;
-    }
-
-    @Override
-    public String getInputText() {
-        return inputField.getText();
-    }
-
-    @Override
-    public void setInputText(String s) {
-        inputLabel.setText(s);
-    }
-
-    @Override
-    public Color getLabelColor() {
-        return inputLabel.getForeground();
-    }
-
-    @Override
-    public void setLabelColor(Color c) {
-        inputLabel.setForeground(c);
-    }
-
-    @Override
-    public boolean isRounded() {
-        return shape.isRounded();
-    }
-
-    @Override
-    public boolean isSharp() {
-        return shape.isSharp();
-    }
-
-    @Override
-    public void setRounded(boolean b) {
-        if(b) {
-            if (shape.isSharp() == true) {
-                shape.setRounded(true);
-                shape.setCornerRadius(10);
-            }
-        } else {
-            shape.setRounded(false);
-        }
-    }
-
-    @Override
-    public void setCornerRadius(double radius) {
-        shape.setCornerRadius(radius);
-    }
-
-    @Override
-    public double getCornerRadius() {
-        return shape.getCornerRadius();
-    }
 }
