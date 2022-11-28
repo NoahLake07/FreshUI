@@ -46,7 +46,7 @@ public class Header implements FreshComponent, Colorable, HeaderTraits {
         headerFont = new Font("Arial",Font.PLAIN, (int) (shape.getHeight()/2));
         isAdded = false;
         isVisible = false;
-        headerColor = new Color(115, 234, 189);
+        headerColor = new Color(82, 204, 190);
         textColor = new Color(0,0,0);
 
         shape.setColor(headerColor);
