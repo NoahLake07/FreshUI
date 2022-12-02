@@ -5,4 +5,6 @@ public interface ActionAware {
     void setupMouse();
     void setupKeys();
 
+    void startListening();
+
 }

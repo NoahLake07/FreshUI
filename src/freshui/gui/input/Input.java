@@ -1,4 +1,4 @@
-package freshui.gui;
+package freshui.gui.input;
 
 import acm.program.GraphicsProgram;
 import freshui.Constants;
@@ -10,7 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class Input implements InputTraits, Colorable, Roundable, ObjectOutline, FreshComponent, ActionAware {
+public class Input implements Colorable, Roundable, ObjectOutline, FreshComponent, ActionAware {
 
     // FreshProgram
     FreshProgram freshProgramParent;
@@ -119,6 +119,14 @@ public class Input implements InputTraits, Colorable, Roundable, ObjectOutline, 
         shape.setOutlineColor(FColor.darker(color,0.8));
     }
 
+    /**
+     * Constructs an input using a String to be used as the input text, while
+     * everything else will be defaulted. Program parent is null.
+     */
+    public Input(String label){
+        this(label, null);
+    }
+
     public void updateBounds(){
         // aligning label(s) and field(s)
         inputLabel.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -207,9 +215,6 @@ public class Input implements InputTraits, Colorable, Roundable, ObjectOutline, 
         freshProgramParent.add(inputField,0,0);
         freshProgramParent.add(inputLabel, 0,0);
         updateBounds();
-
-        inputField.addMouseListener(mouseAdapter);
-        inputField.addKeyListener(keyAdapter);
     }
 
     @Override
@@ -235,37 +240,6 @@ public class Input implements InputTraits, Colorable, Roundable, ObjectOutline, 
     @Override
     public void setProgramParent(FreshProgram fpParent) {
         freshProgramParent = fpParent;
-    }
-
-    @Override
-    public void setLabel(String s) {
-        inputLabel.setText(s + " ");
-        updateBounds();
-    }
-
-    @Override
-    public String getLabel() {
-        return inputLabel.getText();
-    }
-
-    @Override
-    public String getInputText() {
-        return inputField.getText();
-    }
-
-    @Override
-    public void setInputText(String s) {
-        inputField.setText(s);
-    }
-
-    @Override
-    public Color getLabelColor() {
-        return shape.getColor();
-    }
-
-    @Override
-    public void setLabelColor(Color c) {
-        inputLabel.setForeground(c);
     }
 
     @Override
@@ -339,5 +313,11 @@ public class Input implements InputTraits, Colorable, Roundable, ObjectOutline, 
     @Override
     public void setupKeys() {
         enterKeyPressed = Constants.emptyRunnable;
+    }
+
+    @Override
+    public void startListening() {
+        inputField.addMouseListener(mouseAdapter);
+        inputField.addKeyListener(keyAdapter);
     }
 }

@@ -1,15 +1,9 @@
 package freshui;
 
 import freshui.graphics.FRect;
-import freshui.gui.Header;
-import freshui.gui.Input;
-import freshui.interfaces.FreshComponent;
+import freshui.gui.input.Input;
 import freshui.program.FreshProgram;
-import freshui.util.FColor;
-import freshui.util.Resizer;
-import freshui.util.SystemInfo;
 
-import javax.swing.*;
 import java.awt.*;
 
 public class FreshUI extends FreshProgram {
@@ -19,12 +13,6 @@ public class FreshUI extends FreshProgram {
     */
 
     public void init(){
-        // temp code
-        Input input = new Input("Input:",this);
-        add(input,70,30);
-        input.setColor(new Color(108, 169, 206));
-
-        input.enterKeyPressed = () -> System.out.println("ENTER KEY PRESSED");
 
     }
 
