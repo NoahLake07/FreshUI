@@ -8,6 +8,8 @@ import freshui.interfaces.ObjectOutline;
 import freshui.interfaces.Roundable;
 import freshui.program.FreshProgram;
 import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseListener;
 
 /**
  * A Basic Rectangle Object that contains intuitive features.
@@ -15,18 +17,19 @@ import java.awt.Color;
 public class FRect implements FreshComponent, Colorable, Roundable, ObjectOutline {
 
     // rectangle parent properties
-    FreshProgram parent;
+    private FreshProgram parent;
 
     // rectangle bound variables
-    double baseX, baseY, width, height, cornerRadius;
-    boolean isAdded, isVisible;
-    Color outlineColor, fillColor;
-    int outlineThickness = 1;
+    private double baseX, baseY, width, height, cornerRadius;
+    private boolean isAdded, isVisible;
+    private Color outlineColor, fillColor;
+    private int outlineThickness = 1;
 
     // rectangle individual shapes
-    GOval topLeft, topRight, bottomLeft, bottomRight; // corners
-    GRect vertical, horizontal; // fillers
-    Outline outline = null;
+    private GOval topLeft, topRight, bottomLeft, bottomRight; // corners
+    private GRect vertical, horizontal; // fillers
+    private Outline outline = null;
+    public GRect shapeArea;
 
     /**
      * Constructs a new FRect using a width, height, and FreshProgram parent.
@@ -53,6 +56,7 @@ public class FRect implements FreshComponent, Colorable, Roundable, ObjectOutlin
         bottomRight = new GOval(cornerRadius*2,cornerRadius*2);
         vertical = new GRect(width - (cornerRadius * 2), height);
         horizontal = new GRect(width, height - (cornerRadius * 2));
+        shapeArea = new GRect(width,height);
 
         // enable color features
         Color transparent = new Color(0,0,0,0);
@@ -70,6 +74,8 @@ public class FRect implements FreshComponent, Colorable, Roundable, ObjectOutlin
         horizontal.setColor(transparent);
         setColor(fillColor);
         setOutlineColor(outlineColor);
+        
+        shapeArea.setColor(new Color(0,0,0,0));
     }
 
     /**
@@ -103,6 +109,10 @@ public class FRect implements FreshComponent, Colorable, Roundable, ObjectOutlin
         outline.setCornerRadius(cornerRadius);
         outline.setSize(width,height);
         outline.setLocation(baseX-outlineThickness,baseY-outlineThickness);
+        
+        // update bound area
+        shapeArea.setSize(width,height);
+        shapeArea.setLocation(baseX, baseY);
 
         // update colors
         setColor(fillColor);
@@ -148,6 +158,7 @@ public class FRect implements FreshComponent, Colorable, Roundable, ObjectOutlin
         baseX = x;
         baseY = y;
         outline.setLocation(x-outlineThickness,y-outlineThickness);
+        shapeArea.setLocation(x,y);
         updateBounds();
     }
 
@@ -156,6 +167,7 @@ public class FRect implements FreshComponent, Colorable, Roundable, ObjectOutlin
         setSize(w,h);
         setLocation(x,y);
         outline.setBounds(x,y,w,h);
+        shapeArea.setBounds(x,y,w,h);
     }
 
     @Override
@@ -163,6 +175,7 @@ public class FRect implements FreshComponent, Colorable, Roundable, ObjectOutlin
         setWidth(w);
         setHeight(h);
         outline.setSize(w,h);
+        shapeArea.setSize(w,h);
     }
 
     @Override
@@ -178,6 +191,7 @@ public class FRect implements FreshComponent, Colorable, Roundable, ObjectOutlin
         parent.add(bottomRight,baseX+width-(cornerRadius*2),baseY+height-(cornerRadius*2));
         parent.add(vertical, baseX+cornerRadius,baseY);
         parent.add(horizontal, baseX,baseY+cornerRadius);
+        parent.add(shapeArea, baseX, baseY);
     }
 
     @Override
@@ -201,6 +215,7 @@ public class FRect implements FreshComponent, Colorable, Roundable, ObjectOutlin
         vertical.setVisible(b);
         horizontal.setVisible(b);
         outline.setVisible(b);
+        shapeArea.setVisible(b);
     }
 
     @Override
@@ -296,6 +311,9 @@ public class FRect implements FreshComponent, Colorable, Roundable, ObjectOutlin
         return cornerRadius;
     }
 
+    public void addMouseListener(MouseListener ml){
+        shapeArea.addMouseListener(ml);
+    }
 
 
     // ============================================================= //

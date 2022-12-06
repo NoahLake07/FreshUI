@@ -3,7 +3,6 @@ package freshui.program;
 import acm.graphics.GCanvas;
 import acm.program.GraphicsProgram;
 import freshui.interfaces.FreshComponent;
-
 import javax.swing.*;
 
 public abstract class FreshProgram extends GraphicsProgram {

@@ -1,11 +1,9 @@
 package freshui.interfaces;
 
-import acm.program.GraphicsProgram;
 import freshui.program.FreshProgram;
 
 public interface FreshComponent {
 
-    GraphicsProgram programParent = null;
     void setLocation(double x, double y);
     double getX();
     double getY();
