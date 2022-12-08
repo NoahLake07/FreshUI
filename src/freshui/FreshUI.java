@@ -1,7 +1,7 @@
 package freshui;
-
 import freshui.graphics.FButton;
 import freshui.graphics.FRect;
+import freshui.gui.NavBar;
 import freshui.gui.input.Input;
 import freshui.program.FreshProgram;
 
@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 public class FreshUI extends FreshProgram {
     /*
@@ -17,19 +18,15 @@ public class FreshUI extends FreshProgram {
     */
 
     public void init(){
+        ArrayList<String> pages = new ArrayList<>();
+        pages.add("Page 1");
+        pages.add("Page 2");
+        pages.add("Page 3");
+        pages.add("Page 4");
 
-    }
+        NavBar nb = new NavBar(pages,getWidth(),getHeight()/10);
+        add(nb, 0,getHeight() - nb.getHeight());
 
-    public void actionPerformed(ActionEvent ae){
-        switch (ae.getActionCommand()){
-            case "Hello":
-                System.out.println("Button hit");
-                break;
-        }
-    }
-
-    private void testMethod(){
-        // temp code
     }
 
     public static void main(String[] args) {
