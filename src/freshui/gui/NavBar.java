@@ -28,6 +28,8 @@ public class NavBar implements FreshComponent {
     private FreshProgram parent;
     private double baseX, baseY;
 
+    public Runnable action = () -> {};
+
     public NavBar(ArrayList<String> pageList){
         this(pageList, 350, 50,null);
     }
@@ -88,6 +90,39 @@ public class NavBar implements FreshComponent {
             }
         }
         updateColors();
+    }
+
+    /**
+     * Runs an action presented by the caller class
+     */
+    public void updatePage(){
+        action.run();
+    }
+
+    public void setAction(Runnable newAction){
+        action = newAction;
+    }
+
+    public Runnable getAction(){
+        return action;
+    }
+
+    public int getSelected(){
+        return selected+1;
+    }
+
+    public int getRawSelection(){
+        return selected;
+    }
+
+    public void setSelected(int s){
+        selected = s-1;
+        action.run();
+        updateColors();
+    }
+
+    public void setRawSelection(int s){
+        selected = s;
     }
 
     private void updateColors(){
@@ -165,7 +200,6 @@ public class NavBar implements FreshComponent {
 
         for (int i = 0; i < tiles.size(); i++) {
             parent.add(tiles.get(i), 0,0);
-            System.out.println("Added tile " + i);
         }
 
         updateBounds();
@@ -215,6 +249,7 @@ public class NavBar implements FreshComponent {
                 public void mousePressed(MouseEvent e) {
                     selected = assignedPage;
                     updateColors();
+                    updatePage();
                 }
 
                 @Override
