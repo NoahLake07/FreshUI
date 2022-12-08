@@ -13,7 +13,7 @@ public class NavBar implements FreshComponent {
 
     // data
     ArrayList<String> pages;
-    ArrayList<FButton> tiles;
+    ArrayList<Tile> tiles;
     int selected = 0;
 
     // colors
@@ -55,30 +55,7 @@ public class NavBar implements FreshComponent {
 
         // set up the tiles
         for (int i = 0; i < pages.size(); i++) {
-            FButton tile = new FButton(pages.get(i),tileW, tileH);
-            System.out.println("Button Setup.");
-            tile.setColor(defaultColor);
-            tile.setOutlineVisible(true);
-            tile.setOutlineColor(FColor.darker(defaultColor, 0.8));
-
-            int assignedPage = i;
-            tile.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    selected = assignedPage;
-                    updateColors();
-                }
-
-                @Override
-                public void mouseEntered(MouseEvent e){
-
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e){
-
-                }
-            });
+            Tile tile = new Tile(pages.get(i), i, tileW, tileH);
             tiles.add(tile);
         }
         updateColors();
@@ -91,16 +68,7 @@ public class NavBar implements FreshComponent {
 
         // add the button to the bar
         pages.add(label);
-        tiles.add(new FButton(label,tileW, tileH));
-        System.out.println("Button Setup.");
-        int finalI = tiles.size()-1;
-        tiles.get(tiles.size()-1).addMouseListener( new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                selected = finalI;
-                updateBounds();
-            }
-        });
+        tiles.add(new Tile(label, pages.size()-1, tileW, tileH));
         updateColors();
     }
 
@@ -123,15 +91,8 @@ public class NavBar implements FreshComponent {
     }
 
     private void updateColors(){
-        for (int i = 0; i < tiles.size()-1; i++) {
-            if(i == selected){
-                tiles.get(i).setColor(selectedColor);
-                tiles.get(i).setOutlineVisible(false);
-            } else {
-                tiles.get(i).setColor(defaultColor);
-                tiles.get(i).setOutlineVisible(true);
-                tiles.get(i).setOutlineColor(FColor.darker(defaultColor, 0.8));
-            }
+        for (int i = 0; i < tiles.size(); i++) {
+            tiles.get(i).update();
         }
     }
 
@@ -238,4 +199,52 @@ public class NavBar implements FreshComponent {
     public void setProgramParent(FreshProgram fpParent) {
         parent = fpParent;
     }
+
+    private class Tile extends FButton {
+
+        int assignedPage;
+        String label;
+
+        public Tile(String s, int assigned, double w, double h){
+            super(s,w,h);
+            label = s;
+            assignedPage = assigned;
+
+            MouseAdapter tileAdapter = new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    selected = assignedPage;
+                    updateColors();
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    if(!isSelected()){
+                        setColor(FColor.darker(defaultColor, 0.8));
+                    }
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    if(!isSelected()){
+                        setColor(defaultColor);
+                    }
+                }
+            };
+            addMouseListener(tileAdapter);
+        }
+
+        public boolean isSelected(){
+            return selected==assignedPage;
+        }
+
+        public void update(){
+            if(isSelected()){
+                setColor(selectedColor);
+            } else {
+                setColor(defaultColor);
+            }
+        }
+    }
+
 }
