@@ -1,6 +1,5 @@
 package freshui.gui.input;
 
-import acm.program.GraphicsProgram;
 import freshui.Constants;
 import freshui.graphics.FRect;
 import freshui.interfaces.*;
@@ -145,6 +144,14 @@ public class Input implements Colorable, Roundable, ObjectOutline, FreshComponen
 
         // update label fonts
         inputLabel.setFont(labelFont);
+    }
+
+    public String getInputText(){
+        return inputField.getText();
+    }
+
+    public void setInputText(String s){
+        inputField.setText(s);
     }
 
     @Override
