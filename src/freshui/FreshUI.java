@@ -19,7 +19,7 @@ public class FreshUI extends FreshProgram {
     */
 
     public void init(){
-
+        
     }
 
     public static void main(String[] args) {

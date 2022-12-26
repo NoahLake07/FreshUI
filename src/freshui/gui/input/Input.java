@@ -237,6 +237,9 @@ public class Input implements Colorable, Roundable, ObjectOutline, FreshComponen
     @Override
     public void setVisible(boolean b) {
         isVisible = b;
+        inputField.setVisible(b);
+        shape.setVisible(b);
+        inputLabel.setVisible(b);
     }
 
     @Override
