@@ -17,13 +17,4 @@ public class FreshUI extends FreshProgram {
     FreshUI - Java Toolkit
     Developed by Noah Lake
     */
-
-    public void init(){
-        
-    }
-
-    public static void main(String[] args) {
-        new FreshUI().start();
-    }
-
 }

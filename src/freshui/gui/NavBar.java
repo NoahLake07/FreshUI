@@ -17,7 +17,7 @@ public class NavBar implements FreshComponent {
     int selected = 0;
 
     // colors
-    Color defaultColor, selectedColor;
+    public Color defaultColor, selectedColor;
 
     // size data
     private double width, height, tileW, tileH;
@@ -282,4 +282,19 @@ public class NavBar implements FreshComponent {
         }
     }
 
+    public Color getDefaultColor(){
+        return defaultColor;
+    }
+
+    public Color getSelectedColor(){
+        return selectedColor;
+    }
+
+    public void setDefaultColor(Color defaultColor) {
+        this.defaultColor = defaultColor;
+    }
+
+    public void setSelectedColor(Color selectedColor) {
+        this.selectedColor = selectedColor;
+    }
 }
