@@ -17,7 +17,7 @@ public class NavBar implements FreshComponent {
     int selected = 0;
 
     // colors
-    public Color defaultColor, selectedColor;
+    private Color defaultColor, selectedColor;
 
     // size data
     private double width, height, tileW, tileH;
@@ -108,7 +108,7 @@ public class NavBar implements FreshComponent {
     }
 
     public int getSelected(){
-        return selected+1;
+        return selected;
     }
 
     public int getRawSelection(){
@@ -121,7 +121,7 @@ public class NavBar implements FreshComponent {
         updateColors();
     }
 
-    public void setRawSelection(int s){
+    public void setSelection(int s){
         selected = s;
     }
 
@@ -292,9 +292,11 @@ public class NavBar implements FreshComponent {
 
     public void setDefaultColor(Color defaultColor) {
         this.defaultColor = defaultColor;
+        updateColors();
     }
 
     public void setSelectedColor(Color selectedColor) {
         this.selectedColor = selectedColor;
+        updateColors();
     }
 }

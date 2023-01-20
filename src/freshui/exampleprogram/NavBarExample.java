@@ -1,12 +1,12 @@
-package freshui.ComponentExamplePrograms;
+package freshui.exampleprogram;
 
+import freshui.FreshUI;
 import freshui.gui.NavBar;
-import freshui.program.FreshProgram;
 
 import javax.swing.*;
 import java.util.ArrayList;
 
-public class NavBarExample extends FreshProgram {
+public class NavBarExample extends FreshUI {
 
     public void init(){
         // page data
@@ -21,7 +21,7 @@ public class NavBarExample extends FreshProgram {
         pages.add("Page 2");
         pages.add("Page 3");
         pages.add("Page 4");
-        NavBar nb = new NavBar(pages,getWidth(),getHeight()/10);
+        NavBar nb = new NavBar(pages,this.getWidth(),getHeight()/10);
         add(nb, 0,getHeight() - nb.getHeight());
         nb.setAction(new Runnable() {
             @Override
