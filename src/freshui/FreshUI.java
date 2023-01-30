@@ -1,5 +1,6 @@
 package freshui;
 import freshui.program.FreshProgram;
+import freshui.graphics.*;
 
 public class FreshUI extends FreshProgram {
     /*
