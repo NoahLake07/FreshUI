@@ -3,124 +3,177 @@ package freshui.graphics;
 import freshui.interfaces.FreshComponent;
 import freshui.program.FreshProgram;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class FPanel implements FreshComponent {
 
-    ArrayList<FreshComponent> objects = new ArrayList<>();
+    // FPanel data
+    private ArrayList<ObjectData> objects = new ArrayList<>();
+    private FreshProgram parent = null;
+    private boolean isAdded = false;
+    private boolean isVisible = true;
 
-    double width = 0, height = 0, panelX = 0, panelY = 0;
-    boolean isAdded = false, isVisible = false;
-    FreshProgram parent;
+    // location and bound data
+    private Point panelLocation = null;
+    private double panelWidth = DEFAULT_WIDTH;
+    private double panelHeight = DEFAULT_HEIGHT;
 
-    public FPanel(int w, int h){
-        width = w;
-        height = h;
-    }
 
+    // constants
+    public static final int DEFAULT_WIDTH = 40;
+    public static final int DEFAULT_HEIGHT = 40;
+
+    /// region Constructors
     public FPanel(){
-        this(0,0);
+        // instantiate objects with either null or preset empty lists
+        ArrayList<ObjectData> objects = new ArrayList<>();
+        FreshProgram parent = null;
     }
+    /// endregion
 
-    private void updateLocation(){
+    /// region Location Methods
+
+    public void setLocation(double x, double y){
+        panelLocation = new Point(x,y);
         for (int i = 0; i < objects.size(); i++) {
-            FreshComponent fc = objects.get(i);
-            objects.get(i).setLocation(panelX+fc.getX(),panelY+fc.getY());
+            objects.get(i).fc.setLocation(panelLocation.x + objects.get(i).x, panelLocation.y + objects.get(i).y);
         }
     }
 
-    public void add(FreshComponent fc, int x, int y){
-        parent.add(fc,panelX+x,panelY+y);
-        objects.add(fc);
-        fc.setLocation(panelX+fc.getX(),panelY+fc.getY());
+    public Point getLocation(){
+        return panelLocation;
     }
 
-    /// region FreshComponent Interface
-
-    @Override
-    public void setLocation(double x, double y) {
-        panelX = x;
-        panelY = y;
-        updateLocation();
+    public double getX(){
+        return panelLocation.x;
     }
 
-    @Override
-    public double getX() {
-        return panelX;
-    }
-
-    @Override
-    public double getY() {
-        return panelY;
-    }
-
-    @Override
-    public double getWidth() {
-        return width;
-    }
-
-    @Override
-    public double getHeight() {
-        return height;
-    }
-
-    @Override
-    public void setWidth(double w) {
-        width = w;
-    }
-
-    @Override
-    public void setHeight(double h) {
-        height = h;
-    }
-
-    @Override
-    public void setBounds(double x, double y, double w, double h) {
-        panelX = x;
-        panelY = y;
-        width = w;
-        height = h;
-        updateLocation();
-    }
-
-    @Override
-    public void setSize(double w, double h) {
-        width = w;
-        height = h;
-    }
-
-    @Override
-    public void addToParent(double x, double y) {
-        for (int i = 0; i < objects.size(); i++) {
-            this.add(objects.get(i), (int) x,(int) y);
-        }
-        updateLocation();
-    }
-
-    @Override
-    public boolean isAdded() {
-        return isAdded;
-    }
-
-    @Override
-    public boolean isVisible() {
-        return isVisible;
-    }
-
-    @Override
-    public void setVisible(boolean b) {
-
-    }
-
-    @Override
-    public FreshProgram getProgramParent() {
-        return parent;
-    }
-
-    @Override
-    public void setProgramParent(FreshProgram fpParent) {
-        parent = fpParent;
+    public double getY(){
+        return panelLocation.y;
     }
 
     /// endregion
+
+    /// region Dimension Methods
+
+    public double getWidth(){
+        return panelWidth;
+    }
+
+    public double getHeight(){
+        return panelHeight;
+    }
+
+    public void setWidth(double w){
+        panelWidth = w;
+    }
+
+    public void setHeight(double h){
+        panelHeight = h;
+    }
+
+    public void setBounds(double x, double y, double w, double h){
+        setLocation(x,y);
+        setWidth(w);
+        setHeight(h);
+    }
+
+    public void setSize(double w, double h){
+        setWidth(w);
+        setHeight(h);
+    }
+
+    /// endregion
+
+    /// region Visibility Methods
+
+    public void setVisible(boolean b){
+        isVisible = b;
+        for (int i = 0; i < objects.size(); i++) {
+            objects.get(i).fc.setVisible(b);
+        }
+    }
+
+    public boolean isVisible(){
+        return isVisible;
+    }
+
+    /// endregion
+
+    /// region Parent Interaction Methods
+
+    public void add(FreshComponent fc, int x, int y){
+        if(isAdded){
+            objects.add(new ObjectData(fc, x, y));
+            parent.add(fc, x + panelLocation.x, y + panelLocation.y);
+        } else {
+            objects.add(new ObjectData(fc, x, y));
+        }
+    }
+
+    public void addToParent(double x, double y){
+        panelLocation = new Point(x,y);
+        for (int i = 0; i < objects.size(); i++) {
+            parent.add(objects.get(i).fc, objects.get(i).x + panelLocation.x, objects.get(i).y + panelLocation.y);
+        }
+        isAdded = true;
+    }
+
+    public void setProgramParent(FreshProgram fp){
+        parent = fp;
+    }
+
+    public FreshProgram getProgramParent(){
+        return parent;
+    }
+
+    public boolean isAdded(){
+        return isAdded;
+    }
+
+    /// endregion
+
+    /// region Inner Class Data
+
+    private class ObjectData {
+        FreshComponent fc = null;
+        int x = 0;
+        int y = 0;
+
+        public ObjectData(FreshComponent freshComp){
+            this(freshComp,0,0);
+        }
+
+        public ObjectData(FreshComponent freshComp, int locX, int locY){
+            x = locX;
+            y = locY;
+            fc = freshComp;
+        }
+    }
+
+    private class Point {
+        double x = 0;
+        double y = 0;
+
+        public Point(double x0, double y0){
+            x = x0;
+            y = y0;
+        }
+    }
+
+    /// endregion
+
+    /// region Shape Mods
+
+    public void addOutline(){
+        FRect outline = new FRect(this.panelWidth, this.panelHeight);
+        outline.setOutlineVisible(true);
+        outline.setOutlineColor(Color.BLACK);
+        outline.setColor(new Color(255, 255, 255, 0));
+        objects.add(new ObjectData(outline,0,0));
+    }
+
+    /// endregion
+
 }

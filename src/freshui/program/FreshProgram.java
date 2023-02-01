@@ -2,6 +2,8 @@ package freshui.program;
 
 import acm.graphics.GCanvas;
 import acm.program.GraphicsProgram;
+import freshui.graphics.FCompound;
+import freshui.graphics.FPanel;
 import freshui.interfaces.FreshComponent;
 import javax.swing.*;
 
@@ -35,6 +37,19 @@ public abstract class FreshProgram extends GraphicsProgram {
         } else {
             log("Object not added: specified program parent did not match");
         }
+    }
+
+    public void add(FPanel fp, double x, double y){
+        fp.setProgramParent(this);
+        if(fp.getProgramParent() == this) {
+            fp.addToParent(x,y);
+        } else {
+            log("Object not added: specified program parent did not match");
+        }
+    }
+
+    public void add(FreshComponent fc){
+        add(fc,0,0);
     }
 
     public void log(String log){

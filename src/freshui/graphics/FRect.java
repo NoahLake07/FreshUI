@@ -7,7 +7,8 @@ import freshui.interfaces.FreshComponent;
 import freshui.interfaces.ObjectOutline;
 import freshui.interfaces.Roundable;
 import freshui.program.FreshProgram;
-import java.awt.Color;
+
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseListener;
 
