@@ -1,8 +1,10 @@
 package freshui.graphics;
 
+import acm.graphics.GObject;
 import freshui.interfaces.FreshComponent;
 import freshui.program.FreshProgram;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -115,7 +117,7 @@ public class FPanel implements FreshComponent {
     public void addToParent(double x, double y){
         panelLocation = new Point(x,y);
         for (int i = 0; i < objects.size(); i++) {
-            parent.add(objects.get(i).fc, objects.get(i).x + panelLocation.x, objects.get(i).y + panelLocation.y);
+            objects.get(i).add((int) x, (int) y,parent);
         }
         isAdded = true;
     }
@@ -136,19 +138,77 @@ public class FPanel implements FreshComponent {
 
     /// region Inner Class Data
 
-    private class ObjectData {
+    private class ObjectData<C> {
+
+        public final static int FRESH_COMPONENT = 11;
+        public final static int JAVA_SWING_COMPONENT = 12;
+        public final static int ACM_GRAPHICS_COMPONENT = 13;
+        public final static int JAVA_AWT_COMPONENT = 14;
+
+        /**
+         * FreshComponent object for the FreshUI Java package
+         */
         FreshComponent fc = null;
+        /**
+         * JComponent for the Java Swing package
+         */
+        JComponent jc = null;
+        /**
+         * Component for the Java AWT package
+         */
+        Component ac = null;
+        /**
+         * GObject for the ACM Java Library
+         */
+        GObject gc = null;
+
         int x = 0;
         int y = 0;
+        private int objType = -1;
 
         public ObjectData(FreshComponent freshComp){
             this(freshComp,0,0);
         }
 
         public ObjectData(FreshComponent freshComp, int locX, int locY){
+            objType = FRESH_COMPONENT;
             x = locX;
             y = locY;
             fc = freshComp;
+        }
+
+        public ObjectData(JComponent jComp, int locX, int locY){
+            objType = JAVA_SWING_COMPONENT;
+            x = locX;
+            y = locY;
+            jc = jComp;
+        }
+
+        /**
+         * Adds the object to a FreshUI program window (FreshProgram)
+         * @param sY the specified location for the FPanel
+         * @param sY
+         */
+        public void add(int sX, int sY, FreshProgram parent){
+
+            switch (objType){
+                case FRESH_COMPONENT -> {
+                    parent.add(fc,sX+x,sY+y);
+                }
+
+                case JAVA_SWING_COMPONENT -> {
+                    parent.add(jc,sX+x,sY+y);
+                }
+
+                case JAVA_AWT_COMPONENT -> {
+                    parent.add(ac,sX+x,sY+y);
+                }
+
+                case ACM_GRAPHICS_COMPONENT -> {
+                    parent.add(gc,sX+x,sY+y);
+                }
+            }
+
         }
     }
 
