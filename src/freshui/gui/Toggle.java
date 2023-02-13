@@ -18,7 +18,9 @@ public class Toggle implements freshui.interfaces.Toggle, FreshComponent {
     public final static int DEFAULT_HEIGHT = 20;
     public final static Color DEFAULT_COLOR_OFF = new Color(183, 183, 183);
     public final static Color DEFAULT_COLOR_ON = new Color(63, 155, 78);
-    public final static double HANDLE_FACTOR_SPACE = 0.9;
+    public final static Color DEFAULT_HANDLE_COLOR = new Color(217, 217, 217);
+    public final static double HANDLE_FACTOR_SPACE = 0.7;
+    public final static int DEFAULT_SWITCH_CORNER_RADIUS = 5;
 
     // UI Components
     private FRect track = new FRect(DEFAULT_WIDTH,DEFAULT_HEIGHT);
@@ -26,7 +28,11 @@ public class Toggle implements freshui.interfaces.Toggle, FreshComponent {
 
     // Switch Data
     boolean status;
-    protected Color colorA, colorB, handleColor;
+    /** The toggle's preset track color when ON **/
+    protected Color colorA = null;
+    /** The toggle's preset track color when OFF **/
+    protected Color colorB = null;
+    protected Color handleColor = null;
 
     // FreshUI data
     boolean isAdded = false;
@@ -39,6 +45,9 @@ public class Toggle implements freshui.interfaces.Toggle, FreshComponent {
         status = s;
         colorA = DEFAULT_COLOR_OFF;
         colorB = DEFAULT_COLOR_ON;
+        handle.setCornerRadius(handle.getWidth()/2);
+        track.setCornerRadius(DEFAULT_SWITCH_CORNER_RADIUS);
+        handle.setCornerRadius(DEFAULT_SWITCH_CORNER_RADIUS);
     }
 
     public Toggle(){
@@ -46,10 +55,15 @@ public class Toggle implements freshui.interfaces.Toggle, FreshComponent {
     }
 
     public Toggle (int w, int h){
+        status = false;
         track = new FRect(w,h);
         handle = new FRect(track.getHeight()*HANDLE_FACTOR_SPACE, track.getHeight()*HANDLE_FACTOR_SPACE);
         handle.setCornerRadius(handle.getWidth()/2);
-
+        track.setCornerRadius(DEFAULT_SWITCH_CORNER_RADIUS);
+        handle.setCornerRadius(DEFAULT_SWITCH_CORNER_RADIUS);
+        colorA = DEFAULT_COLOR_ON;
+        colorB = DEFAULT_COLOR_OFF;
+        handleColor = DEFAULT_HANDLE_COLOR;
     }
 
     /// endregion
@@ -125,11 +139,11 @@ public class Toggle implements freshui.interfaces.Toggle, FreshComponent {
         } else {
             track.setColor(colorB);
         }
-        handle.setColor(colorB);
+        handle.setColor(handleColor);
     }
 
     private void updateSize(){
-
+        // update sizes
     }
 
     private void updateAll(){
@@ -144,7 +158,7 @@ public class Toggle implements freshui.interfaces.Toggle, FreshComponent {
     @Override
     public void setLocation(double x, double y) {
         track.setLocation(x,y);
-        // set handle location
+        // update locations
     }
 
     @Override
@@ -193,7 +207,11 @@ public class Toggle implements freshui.interfaces.Toggle, FreshComponent {
     public void addToParent(double x, double y) {
         isAdded = true;
         isVisible = true;
-        // add to parent
+        progPar.add(track,x,y);
+        double dis = (track.getHeight()-handle.getHeight()) /2;
+        progPar.add(handle,track.getX()+dis,track.getY()+dis);
+        updateAppearance();
+        System.out.println(handle.getX() + ", " + handle.getY());
     }
 
     @Override
