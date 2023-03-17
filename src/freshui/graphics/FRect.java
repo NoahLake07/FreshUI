@@ -9,6 +9,7 @@ import freshui.interfaces.Roundable;
 import freshui.program.FreshProgram;
 
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseListener;
 
@@ -314,6 +315,10 @@ public class FRect implements FreshComponent, Colorable, Roundable, ObjectOutlin
 
     public void addMouseListener(MouseListener ml){
         shapeArea.addMouseListener(ml);
+    }
+
+    public void addActionListener(ActionListener al){
+        shapeArea.addActionListener(al);
     }
 
 

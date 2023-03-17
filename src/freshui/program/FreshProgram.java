@@ -1,8 +1,8 @@
 package freshui.program;
 
 import acm.graphics.GCanvas;
+
 import acm.program.GraphicsProgram;
-import freshui.graphics.FCompound;
 import freshui.graphics.FPanel;
 import freshui.interfaces.FreshComponent;
 import javax.swing.*;
@@ -10,6 +10,7 @@ import javax.swing.*;
 public abstract class FreshProgram extends GraphicsProgram {
 
     public GCanvas myCanvas = this.getGCanvas();
+    public boolean debug = false;
 
     public final int CENTER = SwingConstants.CENTER;
     public final int LEFT = SwingConstants.LEFT;
@@ -18,7 +19,7 @@ public abstract class FreshProgram extends GraphicsProgram {
     public void init(){
         this.getMenuBar().setVisible(false);
         this.setProgramName("FreshUI Window");
-        log("INITIALIZED");
+        log("FreshProgram Window Initialized");
     }
 
     public void run(){
@@ -52,8 +53,13 @@ public abstract class FreshProgram extends GraphicsProgram {
         add(fc,0,0);
     }
 
+    public void add(JComponent var1, double var2, double var3){
+        super.add(var1,var2,var3);
+    }
     public void log(String log){
-        System.out.println("FreshUI:Program:: " + log);
+        if(debug) {
+            System.out.println("FreshUI:Program:: " + log);
+        }
     }
 
 }

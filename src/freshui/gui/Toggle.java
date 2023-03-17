@@ -3,8 +3,10 @@ package freshui.gui;
 import freshui.graphics.FRect;
 import freshui.interfaces.FreshComponent;
 import freshui.program.FreshProgram;
+import jdk.jfr.Percentage;
 
 import java.awt.*;
+import java.awt.event.*;
 
 public class Toggle implements freshui.interfaces.Toggle, FreshComponent {
 
@@ -12,50 +14,46 @@ public class Toggle implements freshui.interfaces.Toggle, FreshComponent {
        - TODO Complete the object instantiation and placement of the toggle
      */
 
-
-    // constants
-    public final static int DEFAULT_WIDTH = 60;
+    // * Constants
+    public final static int DEFAULT_WIDTH = 50;
     public final static int DEFAULT_HEIGHT = 20;
     public final static Color DEFAULT_COLOR_OFF = new Color(183, 183, 183);
     public final static Color DEFAULT_COLOR_ON = new Color(63, 155, 78);
     public final static Color DEFAULT_HANDLE_COLOR = new Color(217, 217, 217);
     public final static double HANDLE_FACTOR_SPACE = 0.7;
-    public final static int DEFAULT_SWITCH_CORNER_RADIUS = 5;
+    public final static int DEFAULT_SWITCH_CORNER_RADIUS = 8;
 
-    // UI Components
-    private FRect track = new FRect(DEFAULT_WIDTH,DEFAULT_HEIGHT);
-    private FRect handle = new FRect(track.getHeight()*HANDLE_FACTOR_SPACE, track.getHeight()*HANDLE_FACTOR_SPACE);
+    // * UI Components
+    private FRect track, handle;
 
-    // Switch Data
+    // * Switch Data
     boolean status;
+    boolean enabled = true;
+
     /** The toggle's preset track color when ON **/
     protected Color colorA = null;
     /** The toggle's preset track color when OFF **/
     protected Color colorB = null;
     protected Color handleColor = null;
+    protected boolean doAnimation = false;
 
-    // FreshUI data
+    // * FreshUI data
     boolean isAdded = false;
     boolean isVisible = false;
     FreshProgram progPar = null;
 
     /// region Constructors
 
-    public Toggle(boolean s){
-        status = s;
-        colorA = DEFAULT_COLOR_OFF;
-        colorB = DEFAULT_COLOR_ON;
-        handle.setCornerRadius(handle.getWidth()/2);
-        track.setCornerRadius(DEFAULT_SWITCH_CORNER_RADIUS);
-        handle.setCornerRadius(DEFAULT_SWITCH_CORNER_RADIUS);
+    public Toggle(boolean status){
+        this(DEFAULT_WIDTH, DEFAULT_HEIGHT,status);
     }
 
     public Toggle(){
-        this(false);
+        this(DEFAULT_WIDTH, DEFAULT_HEIGHT,false);
     }
 
-    public Toggle (int w, int h){
-        status = false;
+    public Toggle(int w, int h, boolean status){
+        this.status = status;
         track = new FRect(w,h);
         handle = new FRect(track.getHeight()*HANDLE_FACTOR_SPACE, track.getHeight()*HANDLE_FACTOR_SPACE);
         handle.setCornerRadius(handle.getWidth()/2);
@@ -66,9 +64,13 @@ public class Toggle implements freshui.interfaces.Toggle, FreshComponent {
         handleColor = DEFAULT_HANDLE_COLOR;
     }
 
+    public Toggle (int w, int h){
+        this(w,h,false);
+    }
+
     /// endregion
 
-    /// region Toggle Interface Methods
+    /// region Toggle Specific Methods
 
     @Override
     public boolean getStatus() {
@@ -78,6 +80,22 @@ public class Toggle implements freshui.interfaces.Toggle, FreshComponent {
     @Override
     public void setStatus(boolean b) {
         status = b;
+    }
+
+    public boolean isEnabled(){
+        return enabled;
+    }
+
+    public void setEnabled(boolean b){
+        enabled = b;
+    }
+
+    public boolean getDoAnimation(){
+        return doAnimation;
+    }
+
+    public void setDoAnimation(boolean b) {
+        this.doAnimation = b;
     }
 
     /// endregion
@@ -133,6 +151,9 @@ public class Toggle implements freshui.interfaces.Toggle, FreshComponent {
 
     /// region Component Updater Methods
 
+    /**
+     * Updates the looks (color) of the toggle component. This does not affect positions or sizes.
+     */
     private void updateAppearance(){
         if(this.status){
             track.setColor(colorA);
@@ -140,8 +161,12 @@ public class Toggle implements freshui.interfaces.Toggle, FreshComponent {
             track.setColor(colorB);
         }
         handle.setColor(handleColor);
+        updateHandle();
     }
 
+    /**
+     * Updates the sizes of the toggle component based on existing inner class data.
+     */
     private void updateSize(){
         // update sizes
     }
@@ -151,9 +176,26 @@ public class Toggle implements freshui.interfaces.Toggle, FreshComponent {
         updateAppearance();
     }
 
+    /**
+     * Updates the handle position to match current status of toggle
+     */
+    private void updateHandle(){
+        final double dis = (track.getHeight()-handle.getHeight()) /2; // calculate the distance for the handle
+
+        if(!status){
+            progPar.add(handle,
+                    this.track.getX()+dis,
+                    this.track.getY()+dis);
+        } else {
+            progPar.add(handle,
+                    this.track.getX()+this.track.getWidth()-this.handle.getWidth()-dis,
+                    this.track.getY()+dis);
+        }
+    }
+
     /// endregion
 
-    /// region FreshComponent Interface Methods
+    /// region FreshComponent Implementations
 
     @Override
     public void setLocation(double x, double y) {
@@ -207,11 +249,17 @@ public class Toggle implements freshui.interfaces.Toggle, FreshComponent {
     public void addToParent(double x, double y) {
         isAdded = true;
         isVisible = true;
-        progPar.add(track,x,y);
-        double dis = (track.getHeight()-handle.getHeight()) /2;
-        progPar.add(handle,track.getX()+dis,track.getY()+dis);
+        progPar.add(track,x,y); // add the track to the exact coordinates
+        double dis = (track.getHeight()-handle.getHeight()) /2; // calculate the distance for the handle
+        progPar.add(handle,track.getX()+dis,track.getY()+dis); // add the handle based off the calculated offset
+
         updateAppearance();
-        System.out.println(handle.getX() + ", " + handle.getY());
+
+        if(progPar.debug) {
+            System.out.println("Toggle-{handle} coordinates: ("+handle.getX() + ", " + handle.getY() + ")");
+        }
+
+        this.addListeners();
     }
 
     @Override
@@ -239,6 +287,66 @@ public class Toggle implements freshui.interfaces.Toggle, FreshComponent {
     @Override
     public void setProgramParent(FreshProgram fpParent) {
         progPar = fpParent;
+    }
+
+    /// endregion
+
+    // region ActionListener Implementations
+
+    public void addActionListener(ActionListener al){
+        track.addActionListener(al);
+    }
+
+    public void addMouseListener(MouseListener ml){
+        track.addMouseListener(ml);
+    }
+
+    // endregion
+
+    // region Other Implementations
+    public String toString(){
+        if(status){
+            return "true";
+        } else {
+            return "false";
+        }
+    }
+    // endregion
+
+    /// region Animation Methods
+
+    private void addListeners(){
+        MouseListener ml = new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                clicked();
+            }
+        };
+        track.addMouseListener(ml);
+    }
+
+    /**
+     * The method called on the action of the toggle being clicked.
+     */
+    private void clicked(){
+        if(progPar.debug){ System.out.println("TOGGLE CLICKED");}
+        if(enabled){
+            if(doAnimation){
+
+            } else {
+                if(status){
+                    status = false;
+                } else {
+                    status = true;
+                }
+
+                updateAppearance();
+                if(progPar.debug){
+                    System.out.println("Toggle status is now: [" + status + "]");
+                }
+            }
+
+        }
     }
 
     /// endregion
