@@ -276,7 +276,7 @@ public class Toggle implements freshui.interfaces.Toggle, FreshComponent {
     public void setVisible(boolean b) {
         isVisible = b;
         handle.setVisible(b);
-        track.setVisible(true);
+        track.setVisible(b);
     }
 
     @Override
