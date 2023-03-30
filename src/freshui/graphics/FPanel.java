@@ -39,7 +39,7 @@ public class FPanel implements FreshComponent {
     public void setLocation(double x, double y){
         panelLocation = new Point(x,y);
         for (int i = 0; i < objects.size(); i++) {
-            objects.get(i).fc.setLocation(panelLocation.x + objects.get(i).x, panelLocation.y + objects.get(i).y);
+            objects.get(i).setLocation(panelLocation.x + objects.get(i).x, panelLocation.y + objects.get(i).y);
         }
     }
 
@@ -93,7 +93,7 @@ public class FPanel implements FreshComponent {
     public void setVisible(boolean b){
         isVisible = b;
         for (int i = 0; i < objects.size(); i++) {
-            objects.get(i).fc.setVisible(b);
+            objects.get(i).setVisible(b);
         }
     }
 
@@ -132,6 +132,15 @@ public class FPanel implements FreshComponent {
         }
     }
 
+    public void add(Component co, int x, int y){
+        if(isAdded){
+            objects.add(new ObjectData(co, x, y));
+            parent.add(co, x + panelLocation.x, y + panelLocation.y);
+        } else {
+            objects.add(new ObjectData(co, x, y));
+        }
+    }
+
     public void addToParent(double x, double y){
         panelLocation = new Point(x,y);
         for (int i = 0; i < objects.size(); i++) {
@@ -157,6 +166,8 @@ public class FPanel implements FreshComponent {
     /// region Inner Class Data
 
     private class ObjectData<C> {
+
+        // region ObjectData Variables
 
         public final static int FRESH_COMPONENT = 11;
         public final static int JAVA_SWING_COMPONENT = 12;
@@ -184,6 +195,10 @@ public class FPanel implements FreshComponent {
         int y = 0;
         private int objType = -1;
 
+        // endregion
+
+        // region ObjectData Constructors
+
         public ObjectData(FreshComponent freshComp){
             this(freshComp,0,0);
         }
@@ -207,6 +222,49 @@ public class FPanel implements FreshComponent {
             x = locX;
             y = locY;
             gc = gObj;
+        }
+
+        public ObjectData(Component comp, int locX, int locY){
+            objType = JAVA_AWT_COMPONENT;
+            x = locX;
+            y = locY;
+            ac = comp;
+        }
+
+        // endregion
+
+        // region ObjectData Interaction Methods
+
+        public void setVisible(boolean b){
+            switch (objType){
+                case FRESH_COMPONENT -> {
+                    fc.setVisible(b);              }
+
+                case JAVA_SWING_COMPONENT -> {
+                    jc.setVisible(b);                    }
+
+                case JAVA_AWT_COMPONENT -> {
+                    ac.setVisible(b);                   }
+
+                case ACM_GRAPHICS_COMPONENT -> {
+                    gc.setVisible(b);                  }
+            }
+        }
+
+        public void setLocation(double x, double y){
+            switch (objType){
+                case FRESH_COMPONENT -> {
+                    fc.setLocation(x,y);                }
+
+                case JAVA_SWING_COMPONENT -> {
+                    jc.setLocation((int) x, (int) y);                }
+
+                case JAVA_AWT_COMPONENT -> {
+                    ac.setLocation((int) x, (int) y);                }
+
+                case ACM_GRAPHICS_COMPONENT -> {
+                    gc.setLocation(x,y);                }
+            }
         }
 
         /**
@@ -233,8 +291,9 @@ public class FPanel implements FreshComponent {
                     parent.add(gc,sX+x,sY+y);
                 }
             }
-
         }
+        // endregion
+
     }
 
     private class Point {
