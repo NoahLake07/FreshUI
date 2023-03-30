@@ -114,6 +114,24 @@ public class FPanel implements FreshComponent {
         }
     }
 
+    public void add(JComponent jc, int x, int y){
+        if(isAdded){
+            objects.add(new ObjectData(jc, x, y));
+            parent.add(jc, x + panelLocation.x, y + panelLocation.y);
+        } else {
+            objects.add(new ObjectData(jc, x, y));
+        }
+    }
+
+    public void add(GObject go, int x, int y){
+        if(isAdded){
+            objects.add(new ObjectData(go, x, y));
+            parent.add(go, x + panelLocation.x, y + panelLocation.y);
+        } else {
+            objects.add(new ObjectData(go, x, y));
+        }
+    }
+
     public void addToParent(double x, double y){
         panelLocation = new Point(x,y);
         for (int i = 0; i < objects.size(); i++) {
@@ -182,6 +200,13 @@ public class FPanel implements FreshComponent {
             x = locX;
             y = locY;
             jc = jComp;
+        }
+
+        public ObjectData(GObject gObj, int locX, int locY){
+            objType = ACM_GRAPHICS_COMPONENT;
+            x = locX;
+            y = locY;
+            gc = gObj;
         }
 
         /**

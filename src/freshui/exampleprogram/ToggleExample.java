@@ -46,7 +46,7 @@ public class ToggleExample extends FreshUI {
         toggleB = new Toggle();
         add(toggleB, toggleA.getX(),toggleA.getY()+toggleA.getHeight()+SWITCH_Y_SPACING);
         toggleB.setStatus(false);
-        toggleB.setColorA(new Color(131, 21, 220));
+        toggleB.setColorA(new Color(118, 12, 201));
 
         labelB = new JLabel("TOGGLE A IS NOW DISABLED");
         add(labelB, toggleB.getX()+toggleB.getWidth()+TOGGLE_LABEL_SPACING,toggleB.getY());
