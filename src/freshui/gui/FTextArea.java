@@ -4,9 +4,7 @@ import freshui.interfaces.FreshComponent;
 import freshui.program.FreshProgram;
 
 import javax.swing.*;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
+import javax.swing.text.*;
 import java.awt.*;
 
 public class FTextArea implements FreshComponent {
@@ -36,11 +34,12 @@ public class FTextArea implements FreshComponent {
         scrollPane.setPreferredSize(new Dimension(w, h));
 
         defaultColor = Color.BLACK;
+        append("");
     }
     //endregion
 
     //region Interaction Methods
-    private void append(String text, Color color, Font font) {
+    public void append(String text, Color color, Font font) {
         StyledDocument doc = textPane.getStyledDocument();
         SimpleAttributeSet style = new SimpleAttributeSet();
         StyleConstants.setForeground(style, color);
@@ -80,6 +79,55 @@ public class FTextArea implements FreshComponent {
         return temp;
     }
 
+    public void setBackground(Color c){
+        this.textPane.setBackground(c);
+    }
+
+    public void setForeground(Color c){
+        this.textPane.setForeground(c);
+    }
+
+    public void setCaretColor(Color c){
+        this.textPane.setCaretColor(c);
+    }
+
+    public void setPaneBackground(Color c){
+        this.scrollPane.setBackground(c);
+    }
+
+    public void setPaneForeground(Color c){
+        this.scrollPane.setForeground(c);
+    }
+
+    public void setOpaque(boolean b){
+        this.scrollPane.setOpaque(b);
+        this.textPane.setOpaque(b);
+    }
+
+    public Color getBackground(){
+        return this.textPane.getBackground();
+    }
+
+    public Color getForeground(){
+        return this.textPane.getForeground();
+    }
+
+    public Color getCaretColor(){
+        return this.textPane.getCaretColor();
+    }
+
+    public void setTabSize(){
+        TabStop[] tabs = new TabStop[2];
+        tabs[0] = new TabStop(60, TabStop.ALIGN_RIGHT, TabStop.LEAD_NONE);
+        tabs[1] = new TabStop(100, TabStop.ALIGN_LEFT, TabStop.LEAD_NONE);
+        TabSet tabset = new TabSet(tabs);
+
+        StyleContext sc = StyleContext.getDefaultStyleContext();
+        AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.TabSet, tabset);
+        textPane.setParagraphAttributes(aset, false);
+        textPane.setText("\tright\tleft\tcenter\tValue\n\t200.002\t200.002\t200.002\t200.002\n");
+    }
+
     //endregion
 
     //region Mutators/Getters
@@ -100,12 +148,32 @@ public class FTextArea implements FreshComponent {
         return this.textPane.getText();
     }
 
+    public int getLength(){
+        return this.textPane.getText().length();
+    }
+
     public void setTextPane(JTextPane newPane){
         this.textPane = newPane;
     }
 
     public JTextPane getTextPane(){
         return this.textPane;
+    }
+
+    public boolean isEditable(){
+        return textPane.isEditable();
+    }
+
+    public void setEditable(boolean b){
+        textPane.setEditable(b);
+    }
+
+    public void scrollToBottom(){
+        this.textPane.setCaretPosition(textPane.getText().length());
+    }
+
+    public void setCaretPosition(int pos){
+        this.textPane.setCaretPosition(pos);
     }
 
     //endregion
